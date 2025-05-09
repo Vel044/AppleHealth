@@ -1,0 +1,9 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/AbstractPage",
+    "pages/BrowsePage",
+    "pages/SharePage",
+    "pages/UserInfoCollect"
+  ]
+}
