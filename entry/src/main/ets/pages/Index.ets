@@ -96,7 +96,7 @@ struct Index {
 @Component
 struct MainTabs {
   @State currentTab: number = 0
-  mediaIndex:Resource[]=[$r("app.media.abstract"),$r("app.media.share"),$r("app.media.browse")]
+  mediaIndex:Resource[]=[$r("app.media.heart"),$r("app.media.share"),$r("app.media.browse")]
   textIndex:string[]=["摘要","分享","浏览"]
 
 
@@ -105,7 +105,7 @@ struct MainTabs {
     Column() {
       Image(this.mediaIndex[index])
         .size({ width: 28, height: 28 })
-        .colorBlend(this.currentTab == index? "#007AFF" : "#959595")
+        .fillColor(this.currentTab == index? "#007AFF" : "#959595")
 
       Text(this.textIndex[index])
         .fontSize(8)

@@ -97,7 +97,7 @@ export default struct AbstractPage {
     Column(){
       Row(){
         Row(){
-          Image($r("app.media.bmi"))
+          Image($r("app.media.people"))
             .height(20)
             .margin(5)
             .colorBlend(Color.Blue)
