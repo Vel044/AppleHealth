@@ -1,31 +1,37 @@
-// AbstractPage.ets
+// pages/AbstractPage.ets
 
 import { Health, DefaultHealth } from "../model/Health"
 import { UserInfo, defaultUserInfo } from '../model/UserInfo';
+
+
+
 
 @Entry
 @Component
 export default struct AbstractPage {
 
   @StorageLink('userInfo') userInfo: UserInfo = AppStorage.get('userInfo') ?? defaultUserInfo;
-
+  @StorageLink('currentBMI') tempBMI: number = 0;
   date:Date=new Date();
 
   @State todayHealth:Health=DefaultHealth;
-  @State bmi:number=this.userInfo.weight/this.userInfo.userHeight/this.userInfo.userHeight;
+  // @State tempBMI:number = 0; // 新增一个单独的BMI状态变量
 
   aboutToAppear(): void {
-    this.todayHealth.bmi=(this.userInfo.weight/this.userInfo.userHeight/this.userInfo.userHeight*10000);
-    this.todayHealth.bmi=Math.round(this.todayHealth.bmi*10)/10
+    // 计算BMI值
+    this.calculateBMI();
   }
-
-
+  
+  calculateBMI(): void {
+    if (this.userInfo && this.userInfo.userHeight > 0 && this.userInfo.weight > 0) {
+      this.tempBMI = Math.round((this.userInfo.weight / (this.userInfo.userHeight * this.userInfo.userHeight / 10000)) * 10) / 10;
+    }
+  }
 
 
 
   @Builder
   private fitnessTemplate(fitness:string,data:number,unit:string){
-
 
     Column(){
       Row(){
@@ -92,8 +98,7 @@ export default struct AbstractPage {
   }
 
   @Builder
-  bodyTemplate (){
-
+  private bodyTemplate (){
     Column(){
       Row(){
         Row(){
@@ -125,7 +130,7 @@ export default struct AbstractPage {
             .alignSelf(ItemAlign.Start)
 
           Row(){
-            Text(this.todayHealth.bmi+"")
+            Text(this.tempBMI + "") // 使用新的tempBMI变量替代todayHealth.bmi
               .fontSize(30)
               .alignSelf(ItemAlign.End)
               .fontWeight(FontWeight.Bold)
@@ -145,9 +150,8 @@ export default struct AbstractPage {
         .alignSelf(ItemAlign.End)
         .margin({ left:15,bottom:5 })
 
-        Text("这边后面需要绘图")
-          .alignSelf(ItemAlign.End)
-          .margin(10)
+
+        Text("绘图")
 
       }.width("100%")
       .justifyContent(FlexAlign.SpaceBetween)
@@ -160,6 +164,9 @@ export default struct AbstractPage {
     .justifyContent(FlexAlign.SpaceBetween)
     .margin({ top:5,bottom:5 })
   }
+
+  
+
 
   build() {
 

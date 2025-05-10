@@ -1,4 +1,4 @@
-// SharePage.ets
+// pages/SharePage.ets
 
 @Entry
 @Component

@@ -1,4 +1,4 @@
-// BrowsePage.ets
+// pages/BrowsePage.ets
 
 
 interface HealthCategory{

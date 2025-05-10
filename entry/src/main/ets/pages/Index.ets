@@ -1,4 +1,4 @@
-// Index.ets
+// pages/Index.ets
 import { UserInfo, defaultUserInfo } from '../model/UserInfo';
 import UserInfoCollect from './UserInfoCollect';
 import AbstractPage from './AbstractPage';
@@ -15,9 +15,7 @@ struct Index {
   // 直接从AppStorage读取，如果不存在则使用默认值
   @StorageLink('userInfo') userInfo: UserInfo = AppStorage.get('userInfo') ?? defaultUserInfo;
 
-
   @State isShow:boolean = !this.validateUserInfoCompleteness();
-
 
   private validateUserInfoCompleteness(): boolean {
     return !!this.userInfo.surName &&

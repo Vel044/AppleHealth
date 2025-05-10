@@ -1,4 +1,4 @@
-// UserInfoCollect.ets
+// pages/UserInfoCollect.ets
 import { UserInfo, defaultUserInfo } from '../model/UserInfo';
 
 import { notificationManager } from '@kit.NotificationKit';
@@ -447,16 +447,15 @@ export default struct UserInfoCollect {
         .onClick(() => {
           console.log('用户信息已保存:');
           this.userInfo = this.tempUserInfo;
+      
+          // 计算并更新BMI值
+          const bmi = Math.round((this.userInfo.weight / (this.userInfo.userHeight * this.userInfo.userHeight / 10000)) * 10) / 10;
+          
+          // 将BMI值存储到AppStorage中，以便AbstractPage可以访问
+          AppStorage.setOrCreate('currentBMI', bmi);
+          
           this.showSheet = false;
-          // AppStorage.set('userInfo', this.userInfo); // 必须调用此方法
-
         })
-        .enabled(this.validateForm())
-        .backgroundColor("#419cff")
-        .width("90%")
-        .height(50)
-        .borderRadius(15)
-        .type(ButtonType.Normal)
     }
 
   }

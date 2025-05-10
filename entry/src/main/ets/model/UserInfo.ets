@@ -6,7 +6,7 @@ export interface UserInfo {
   gender: string;
   userHeight: number;
   weight: number;
-  notificationAllowed: boolean; // 新增通知权限状态
+  notificationAllowed: boolean; // 通知权限状态
 }
 
 export const defaultUserInfo: UserInfo = {
