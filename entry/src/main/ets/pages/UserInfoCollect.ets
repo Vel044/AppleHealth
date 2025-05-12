@@ -79,17 +79,13 @@ export default struct UserInfoCollect {
 
       Row(){
         Row() {
-          // Text('<')
-          //   .fontColor('#007AFF')
-          //   .backgroundColor(Color.Transparent)
-          //   .fontSize(30)
-          //
-          // Text('  返回')
-          //   .fontColor('#007AFF')
-          //   .backgroundColor(Color.Transparent)
-          Image($r("app.media.returnIcon"))
-            .width("20%")
-
+          Image($r('app.media.left'))
+            .width(24)
+            .height(24)
+            .fillColor('#007AFF')
+          Text('返回')
+            .fontSize(16)
+            .fontColor('#007AFF')
         }.onClick(() => this.swiperController.showPrevious())
 
         Blank()
@@ -146,17 +142,13 @@ export default struct UserInfoCollect {
     Column({ space: 20 }) {
       Row(){
         Row() {
-          // Text('<')
-          //   .fontColor('#007AFF')
-          //   .backgroundColor(Color.Transparent)
-          //   .fontSize(30)
-          //
-          // Text('  返回')
-          //   .fontColor('#007AFF')
-          //   .backgroundColor(Color.Transparent)
-          Image($r("app.media.returnIcon"))
-            .width("20%")
-
+          Image($r('app.media.left'))
+            .width(24)
+            .height(24)
+            .fillColor('#007AFF')
+          Text('返回')
+            .fontSize(16)
+            .fontColor('#007AFF')
         }.onClick(() => this.swiperController.showPrevious())
         Blank()
           .width("100%")
@@ -249,17 +241,13 @@ export default struct UserInfoCollect {
     Column({ space:10 }) {
       Row(){
         Row() {
-          // Text('<')
-          //   .fontColor('#007AFF')
-          //   .backgroundColor(Color.Transparent)
-          //   .fontSize(30)
-          //
-          // Text('  返回')
-          //   .fontColor('#007AFF')
-          //   .backgroundColor(Color.Transparent)
-          Image($r("app.media.returnIcon"))
-            .width("20%")
-
+          Image($r('app.media.left'))
+            .width(24)
+            .height(24)
+            .fillColor('#007AFF')
+          Text('返回')
+            .fontSize(16)
+            .fontColor('#007AFF')
         }.onClick(() => this.swiperController.showPrevious())
 
         Blank()

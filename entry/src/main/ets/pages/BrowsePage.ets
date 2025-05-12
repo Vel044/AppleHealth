@@ -1,21 +1,16 @@
 // pages/BrowsePage.ets
 
-
 interface HealthCategory{
   icon: Resource,
   title: string,
   color: ResourceColor|string
 }
 
-
 let Purple: string = "#E6E6FA";
 let Turquoise: string = "#40e0d0";
 
-
-
 @Entry
 @Component
-
 export default struct BrowsePage {
   // 健康类别数据
   private healthCategories: Array<HealthCategory> = [
@@ -40,29 +35,31 @@ export default struct BrowsePage {
   @State submitValue: string = ''
   controller: SearchController = new SearchController()
 
+
+  
+  aboutToAppear() {
+    // 初始化过滤后的类别为全部类别
+    this.filteredCategories = [...this.healthCategories]
+  }
+  @State filteredCategories: Array<HealthCategory> = []
+  // 过滤健康类别
+  filterCategories(keyword: string) {
+    if (keyword.trim() === '') {
+      // 如果搜索关键词为空，显示所有类别
+      this.filteredCategories = [...this.healthCategories]
+    } else {
+      // 根据关键词过滤类别
+      this.filteredCategories = this.healthCategories.filter(item => 
+        item.title.includes(keyword)
+      )
+    }
+  }
+
   @Builder
   SearchBar() {
     Row() {
       Column(){
-        // Row() {
-        //   Image($r('app.media.search'))
-        //     .width(16)
-        //     .height(16)
-        //     .margin({ right: 8 })
-        //     .fillColor("#959595")
-        //     .backgroundColor('#F0F0F0')
-        //     .borderColor('#F0F0F0')
-        //   Text('搜索')
-        //     .fontSize(16)
-        //     .fontColor(Color.Gray)
-        // }
-        // .backgroundColor('#F0F0F0')
-        // .borderRadius(10)
-        // .width('100%')
-        // .height(36)
-        // .padding({ left: 10 })
-        // .alignItems(VerticalAlign.Center)
-
+       
         Search({ value: this.changeValue, placeholder: '搜索', controller: this.controller })
           .searchIcon({
             size: '16vp',
@@ -76,9 +73,16 @@ export default struct BrowsePage {
           .textFont({ size: 14, weight: 400 })
           .onSubmit((value: string) => {
             this.submitValue = value
+            this.filterCategories(value)
           })
           .onChange((value: string) => {
             this.changeValue = value
+            this.filterCategories(value)
+          })
+          .onTouch((event) => {
+            if (event.type === TouchType.Down) {
+              this.controller.stopEditing()
+            }
           })
 
       }
@@ -140,35 +144,53 @@ export default struct BrowsePage {
       ListItem() {
         this.SearchBar()
       }
-      ListItem() {
-        Text("健康类别")
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
-          .alignSelf(ItemAlign.Start)
-          .margin({ bottom: 10 })
-      }
 
-      ForEach(this.healthCategories, (item:HealthCategory) => {
+      if (this.filteredCategories.length === 0) {
         ListItem() {
-          this.CategoryItem(item.icon, item.title, item.color)
+          Column() {
+            Image($r('app.media.search'))
+              .width(50)
+              .height(50)
+              .opacity(0.5)
+              .margin({ top: 50, bottom: 20 })
+            Text('未找到相关健康类别')
+              .fontSize(16)
+              .fontColor(Color.Gray)
+          }
+          .width('100%')
+          .height(200)
+          .justifyContent(FlexAlign.Center)
         }
-        .backgroundColor(Color.White)
-        .borderRadius(item.title === '呼吸' ? { topLeft: 10, topRight: 10 } :
-                      item.title === '临床文档' ? { bottomLeft: 10, bottomRight: 10 } : 0)
+      } else {
+        ListItem() {
+          Text("健康类别")
+            .fontSize(20)
+            .fontWeight(FontWeight.Bold)
+            .alignSelf(ItemAlign.Start)
+            .margin({ bottom: 10 })
+        }
 
-        if (item.title !== '临床文档') {
+        ForEach(this.filteredCategories, (item: HealthCategory, index: number) => {
           ListItem() {
-            Divider()
-              .strokeWidth(1)
-              .color('#e0e0e1')
-              .margin({ left:57 })
-              .borderColor(Color.Transparent)
-              .backgroundColor(Color.Transparent)
-
-          }.height(1)
+            this.CategoryItem(item.icon, item.title, item.color)
+          }
           .backgroundColor(Color.White)
-        }
-      })
+          .borderRadius(index === 0 ? { topLeft: 10, topRight: 10 } :
+                        index === this.filteredCategories.length - 1 ? { bottomLeft: 10, bottomRight: 10 } : 0)
+
+          if (index !== this.filteredCategories.length - 1) {
+            ListItem() {
+              Divider()
+                .strokeWidth(1)
+                .color('#e0e0e1')
+                .margin({ left: 57 })
+                .borderColor(Color.Transparent)
+                .backgroundColor(Color.Transparent)
+            }.height(1)
+            .backgroundColor(Color.White)
+          }
+        })
+      }
     }
     .backgroundColor('#f1f2f6')
     .padding({ left: 20, right: 20 })

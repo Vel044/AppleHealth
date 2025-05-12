@@ -4,6 +4,7 @@
     "pages/AbstractPage",
     "pages/BrowsePage",
     "pages/SharePage",
-    "pages/UserInfoCollect"
+    "pages/UserInfoCollect",
+    "pages/DetailPage"
   ]
 }

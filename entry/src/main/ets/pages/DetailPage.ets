@@ -1,0 +1,638 @@
+import router from '@ohos.router';
+import { Health, HealthDataStore ,DefaultHealth} from '../model/Health';
+
+interface RouTmp {
+  type: string,
+  data: number,
+  unit: string,
+}
+
+@Entry
+@Component
+struct DetailPage {
+  params: RouTmp = router.getParams() as RouTmp;
+  @State type: string = this.params.type;
+  @State data: number = this.params.data;
+  @State unit: string = this.params.unit;
+  @State selectedTimeRange: string = '周';
+  private healthDataStore: HealthDataStore = HealthDataStore.getInstance();
+  @StorageLink('todayHealth') todayHealth:Health= AppStorage.get('todayHealth') ?? DefaultHealth;
+  @StorageLink('healthHistory') healthHistory :Health[]=this.healthDataStore.healthHistory
+
+  private timeRanges: string[] = ['日', '周', '月', '6个月', '年'];
+
+  private weekDays: string[] = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+
+  // 计算健康数据百分比的函数 - 基于七天数据的最小值到最大值范围计算百分比
+
+  private calculateHealthPercentage(healthParam: string, dayIndex: number): string {
+    let healthHistory = this.healthHistory;
+    if (!healthHistory || healthHistory.length === 0) {
+      return "0%";
+    }
+
+    const index = Math.min(Math.max(dayIndex, 0), healthHistory.length - 1);
+    const record = healthHistory[index];
+
+    let minValue = Number.MAX_VALUE;
+    let maxValue = Number.MIN_VALUE;
+    let currentValue = 0;
+
+    for (let i = 0; i < healthHistory.length; i++) {
+      let value: number;
+      switch (healthParam) {
+        case 'steps':
+          value = healthHistory[i].steps;
+          break;
+        case 'activeEnergy':
+          value = healthHistory[i].activeEnergy;
+          break;
+        case 'flightsClimbed':
+          value = healthHistory[i].flightsClimbed;
+          break;
+        case 'heartRate':
+          value = healthHistory[i].heartRate;
+          break;
+        case 'sleepAnalysis':
+          value = healthHistory[i].sleepAnalysis;
+          break;
+        case 'bloodOxygen':
+          value = healthHistory[i].bloodOxygen;
+          break;
+        case 'bodyTemperature':
+          value = healthHistory[i].bodyTemperature;
+          break;
+        case 'stressLevel':
+          value = healthHistory[i].stressLevel;
+          break;
+        case 'bmi':
+          value = healthHistory[i].bmi;
+          break;
+        case 'height':
+          value = healthHistory[i].height;
+          break;
+        case 'weight':
+          value = healthHistory[i].weight;
+          break;
+        default:
+          value = 0;
+      }
+
+      if (value < minValue) minValue = value;
+      if (value > maxValue) maxValue = value;
+      if (i === index) currentValue = value;
+    }
+
+    if (maxValue === minValue) {
+      return "100%";
+    }
+
+    const percentage = ((currentValue - minValue) / (maxValue - minValue)) * 100;
+    return `${Math.max(10, Math.min(100, percentage))}%`;
+  }
+
+  // 获取健康参数的英文标识
+  private getHealthParam(): string {
+    switch (this.type) {
+      case '步数':
+        return 'steps';
+      case '活动能量':
+        return 'activeEnergy';
+      case '已爬楼层':
+        return 'flightsClimbed';
+      case '身高':
+        return 'height';
+      case '体重':
+        return 'weight';
+      case '身高体重指数':
+        return 'bmi';
+      default:
+        return '';
+    }
+  }
+
+  // 柱状图Builder函数
+  @Builder
+  private HistogramChart() {
+    Column() {
+      // 日期范围显示
+      Text('2024年1月12日至18日')
+        .fontSize(14)
+        .fontColor('#999999')
+        .margin({ bottom: 20 })
+
+      // 柱状图
+      Row() {
+        ForEach([0, 1, 2, 3, 4, 5, 6], (dayIndex: number) => {
+          Column() {
+            // 柱子
+            Column() {
+              Column()
+                .width(10)
+                .height(this.calculateHealthPercentage(this.getHealthParam(), dayIndex))
+                .backgroundColor('#419cff')
+                .borderRadius(6)
+            }
+            .width(16)
+            .height(120)
+            .justifyContent(FlexAlign.End)
+
+            // 日期标签
+            Text(this.weekDays[dayIndex])
+              .fontSize(12)
+              .fontColor('#999999')
+              .margin({ top: 8 })
+          }
+          .margin({ right: dayIndex < 6 ? 15 : 0 })
+        })
+      }
+      .width('100%')
+      .justifyContent(FlexAlign.Center)
+      .padding({ left: 20, right: 20 })
+    }
+    .width('100%')
+    .backgroundColor(Color.White)
+    .borderRadius(10)
+    .padding(20)
+  }
+
+  // 选项项目Builder函数
+  @Builder
+  private OptionItem(title: string, rightText: string = '', showDivider: boolean = true) {
+    Column() {
+      Row() {
+        Row() {
+          Text(title)
+            .fontSize(16)
+            .fontWeight(FontWeight.Normal)
+        }
+        .alignItems(VerticalAlign.Center)
+
+        Row() {
+          if (rightText) {
+            Text(rightText)
+              .fontSize(16)
+              .fontColor('#999999')
+              .margin({ right: 5 })
+          }
+
+          Image($r('app.media.right'))
+            .width(16)
+            .height(16)
+            .colorBlend("#c4c5c7")
+        }
+        .alignItems(VerticalAlign.Center)
+      }
+      .width('100%')
+      .justifyContent(FlexAlign.SpaceBetween)
+      .alignItems(VerticalAlign.Center)
+      .padding({ top: 12, bottom: 12 })
+
+      if (showDivider) {
+        Divider()
+          .strokeWidth(1)
+          .color('#e0e0e1')
+          .borderColor(Color.Transparent)
+          .backgroundColor(Color.Transparent)
+      }
+    }
+  }
+
+  build() {
+    Column() {
+      // 顶部导航栏
+      Row() {
+        Row() {
+          Image($r('app.media.left'))
+            .width(24)
+            .height(24)
+            .fillColor('#007AFF')
+          Text('摘要')
+            .fontSize(16)
+            .fontColor('#007AFF')
+        }
+        .onClick(() => router.back())
+
+        Text(this.type)
+          .fontSize(18)
+          .fontWeight(FontWeight.Medium)
+
+        Text('添加数据')
+          .fontSize(16)
+          .fontColor('#007AFF')
+          .onClick(() => {
+            this.isShowSheet = true;
+          })
+          .bindSheet(
+            $$this.isShowSheet,
+            this.AddDataSheet(),
+            {
+              detents: [SheetSize.MEDIUM],
+              preferType: SheetType.BOTTOM,
+              showClose: false,
+              dragBar: false,
+              blurStyle: BlurStyle.Thick,
+              backgroundColor: Color.White
+            }
+          )
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+      .justifyContent(FlexAlign.SpaceBetween)
+      .alignItems(VerticalAlign.Center)
+
+      // 主内容区域 - 使用List和ListItem结构
+      List() {
+        // 数据展示区域
+        ListItem() {
+          Column() {
+            Row(){
+              Text(this.data.toString())
+                .fontSize(40)
+                .fontWeight(FontWeight.Bold)
+
+              Text(this.unit)
+                .fontSize(16)
+                .fontColor('#999999')
+            }
+          }
+          .alignItems(HorizontalAlign.Center)
+          .width('100%')
+          .margin({ top: 20, bottom: 20 })
+        }
+
+        // 时间选择器
+        ListItem() {
+          Tabs({ barPosition: BarPosition.Start, index: 1 }) {
+            ForEach(this.timeRanges, (item: string) => {
+              TabContent() {
+                if (item === '周') {
+                  this.HistogramChart()
+                } else {
+                  // 其他时间范围的图表（占位）
+                  Column() {
+                    Text(`${item}数据图表`)
+                      .fontSize(16)
+                      .fontColor('#999999')
+                  }
+                  .width('100%')
+                  .height(200)
+                  .backgroundColor(Color.White)
+                  .borderRadius(10)
+                  .justifyContent(FlexAlign.Center)
+                }
+              }
+              .tabBar(this.TabBuilder(item))
+            })
+          }
+          .barMode(BarMode.Fixed)
+          .barWidth('100%')
+          .barHeight(50)
+
+          .animationDuration(300)
+          .onChange((index: number) => {
+            this.selectedTimeRange = this.timeRanges[index];
+          })
+          .width('100%')
+          .height(300)
+          .backgroundColor('#F5F5F5')
+          .margin({ top: 10 })
+        }
+
+        // 选项标题
+        ListItem() {
+          Text("选项")
+            .fontSize(20)
+            .fontWeight(FontWeight.Bold)
+            .alignSelf(ItemAlign.Start)
+            .margin({ top: 20, bottom: 10 })
+        }
+
+        // 选项区域 - 白色背景容器
+        ListItem() {
+          Column() {
+            // 取消在"摘要"中置顶选项
+            Row() {
+              Row() {
+                Text("取消在\"摘要\"中置顶")
+                  .fontSize(16)
+                  .fontWeight(FontWeight.Normal)
+              }
+              .alignItems(VerticalAlign.Center)
+
+              Row() {
+                Image($r('app.media.right'))
+                  .width(16)
+                  .height(16)
+                  .colorBlend("#c4c5c7")
+              }
+              .alignItems(VerticalAlign.Center)
+            }
+            .width('100%')
+            .justifyContent(FlexAlign.SpaceBetween)
+            .alignItems(VerticalAlign.Center)
+            .padding({ top: 12, bottom: 12 })
+
+          }
+          .width('100%')
+          .backgroundColor(Color.White)
+          .borderRadius(10)
+          .padding({ left: 16, right: 16 })
+        }
+
+        // 置顶主题说明文字
+        ListItem() {
+          Text("置顶主题将在\"摘要\"顶部显示。")
+            .fontSize(14)
+            .fontColor('#999999')
+            .margin({ top: 5, bottom: 15 })
+            .padding({ left: 16, right: 16 })
+            .backgroundColor(Color.Transparent)
+            .width('100%')
+        }
+
+        // 显示所有数据选项
+        ListItem() {
+          Column() {
+            Row() {
+              Text("显示所有数据")
+                .fontSize(16)
+                .fontWeight(FontWeight.Normal)
+
+              Image($r('app.media.right'))
+                .width(16)
+                .height(16)
+                .colorBlend("#c4c5c7")
+            }
+            .width('100%')
+            .justifyContent(FlexAlign.SpaceBetween)
+            .alignItems(VerticalAlign.Center)
+            .padding({ top: 12, bottom: 12 })
+
+            Divider()
+              .strokeWidth(1)
+              .color('#e0e0e1')
+              .borderColor(Color.Transparent)
+              .backgroundColor(Color.Transparent)
+          }
+          .width('100%')
+          .backgroundColor(Color.White)
+          .padding({ left: 16, right: 16 })
+        }
+
+        // 数据源与访问选项
+        ListItem() {
+          Column() {
+            Row() {
+              Text("数据源与访问")
+                .fontSize(16)
+                .fontWeight(FontWeight.Normal)
+
+              Image($r('app.media.right'))
+                .width(16)
+                .height(16)
+                .colorBlend("#c4c5c7")
+            }
+            .width('100%')
+            .justifyContent(FlexAlign.SpaceBetween)
+            .alignItems(VerticalAlign.Center)
+            .padding({ top: 12, bottom: 12 })
+
+            Divider()
+              .strokeWidth(1)
+              .color('#e0e0e1')
+              .borderColor(Color.Transparent)
+              .backgroundColor(Color.Transparent)
+          }
+          .width('100%')
+          .backgroundColor(Color.White)
+          .padding({ left: 16, right: 16 })
+        }
+
+        // 数据源与访问选项
+        ListItem() {
+          Column() {
+            Row() {
+              Text("安全与隐私")
+                .fontSize(16)
+                .fontWeight(FontWeight.Normal)
+
+              Image($r('app.media.right'))
+                .width(16)
+                .height(16)
+                .colorBlend("#c4c5c7")
+            }
+            .width('100%')
+            .justifyContent(FlexAlign.SpaceBetween)
+            .alignItems(VerticalAlign.Center)
+            .padding({ top: 12, bottom: 12 })
+
+            Divider()
+              .strokeWidth(1)
+              .color('#e0e0e1')
+              .borderColor(Color.Transparent)
+              .backgroundColor(Color.Transparent)
+          }
+          .width('100%')
+          .backgroundColor(Color.White)
+          .padding({ left: 16, right: 16 })
+        }
+
+        // 单位选项
+        ListItem() {
+          Row() {
+            Text("单位")
+              .fontSize(16)
+              .fontWeight(FontWeight.Normal)
+
+            Row() {
+              Text(this.unit)
+                .fontSize(16)
+                .fontColor('#999999')
+                .margin({ right: 5 })
+
+              Image($r('app.media.right'))
+                .width(16)
+                .height(16)
+                .colorBlend("#c4c5c7")
+            }
+          }
+          .width('100%')
+          .justifyContent(FlexAlign.SpaceBetween)
+          .alignItems(VerticalAlign.Center)
+          .padding({ top: 12, bottom: 12, left: 16, right: 16 })
+          .backgroundColor(Color.White)
+          .borderRadius(10)
+        }
+      }
+      .width('100%')
+      .layoutWeight(1)
+      .padding({ left: 16, right: 16 })
+      .backgroundColor('#F5F5F5')
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#F5F5F5')
+  }
+
+  @Builder
+  private TabBuilder(name: string) {
+    Column() {
+      Text(name)
+        .fontColor(this.selectedTimeRange === name ? '#000000' : '#999999')
+        .fontSize(16)
+        .fontWeight(this.selectedTimeRange === name ? FontWeight.Medium : FontWeight.Normal)
+    }
+    .width('100%')
+    .height(50)
+    .justifyContent(FlexAlign.Center)
+    .backgroundColor(this.selectedTimeRange === name ? '#FFFFFF' : '#F5F5F5')
+    .borderRadius(this.selectedTimeRange === name ? 8 : 0)
+  }
+
+  @State isShowSheet: boolean = false;
+  @State selectedDate: Date = new Date();
+  @State selectedTime: Date = new Date();
+  @State inputValue: string = ''
+
+
+  @Builder
+  private AddDataSheet() {
+    Column() {
+      Row() {
+        Text('取消')
+          .fontSize(16)
+          .fontColor('#007AFF')
+          .onClick(() => {
+            this.isShowSheet = false;
+          })
+
+        Text(this.type)
+          .fontSize(18)
+          .fontWeight(FontWeight.Medium)
+
+        Text('添加')
+          .fontSize(16)
+          .fontColor('#007AFF')
+          .onClick(() => {
+            // 更新最后一天的数据
+            this.data=Number(this.inputValue)
+            let healthHistory = this.healthHistory;
+            if (healthHistory && healthHistory.length > 0) {
+              const lastRecord = healthHistory[healthHistory.length - 1];
+              const value = parseFloat(this.inputValue);
+
+            switch (this.getHealthParam()) {
+                case 'steps':
+                  lastRecord.steps = value;
+                  this.todayHealth.steps=value;
+                  break;
+                case 'activeEnergy':
+                  lastRecord.activeEnergy = value;
+                  this.todayHealth.activeEnergy=value;
+                  break;
+                case 'flightsClimbed':
+                  lastRecord.flightsClimbed = value;
+                  this.todayHealth.flightsClimbed=value;
+                  break;
+                case 'heartRate':
+                  lastRecord.heartRate = value;
+                  this.todayHealth.heartRate=value;
+                  break;
+                case 'sleepAnalysis':
+                  lastRecord.sleepAnalysis = value;
+                  this.todayHealth.sleepAnalysis=value;
+                  break;
+                case 'bloodOxygen':
+                  lastRecord.bloodOxygen = value;
+                  this.todayHealth.bloodOxygen=value;
+                  break;
+
+                case 'bodyTemperature':
+                  lastRecord.bodyTemperature = value;
+                  this.todayHealth.bodyTemperature=value;
+                  break;
+                case 'stressLevel':
+                  lastRecord.stressLevel = value;
+                  this.todayHealth.stressLevel=value;
+                  break;
+                case 'bmi':
+                  lastRecord.bmi = value;
+                  this.todayHealth.bmi=value;
+                  break;
+                case 'height':
+                  lastRecord.height = value;
+                  this.todayHealth.height=value;
+                  break;
+                case 'weight':
+                  lastRecord.weight = value;
+                  this.todayHealth.weight=value;
+                  break;
+              }
+            }
+            let todayHealth=this.todayHealth
+
+            AppStorage.set("healthHistory", [...healthHistory])
+            AppStorage.set("todayHealth", todayHealth)
+            
+
+            this.isShowSheet = false;
+          })
+      }
+      .width('100%')
+      .justifyContent(FlexAlign.SpaceBetween)
+      .padding(20)
+
+      Column() {
+        Row() {
+          Text('日期')
+            .fontSize(16)
+          Text(this.selectedDate.toLocaleDateString())
+            .fontSize(16)
+            .backgroundColor('#F5F5F5')
+            .padding(10)
+            .borderRadius(8)
+            .margin({ left: 10 })
+            .width("80%")
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, top: 20 })
+        .justifyContent(FlexAlign.SpaceBetween)
+
+        Row() {
+          Text('时间')
+            .fontSize(16)
+          Text(this.selectedTime.toLocaleTimeString())
+            .fontSize(16)
+            .backgroundColor('#F5F5F5')
+            .padding(10)
+            .borderRadius(8)
+            .margin({ left: 10 })
+            .width("80%")
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, top: 20 })
+        .justifyContent(FlexAlign.SpaceBetween)
+
+        Row() {
+          Text(this.unit)
+            .fontSize(16)
+          TextInput({ placeholder: '输入数值' })
+            .backgroundColor('#F5F5F5')
+            .padding(10)
+            .borderRadius(8)
+            .margin({ left: 10 })
+            .width("80%")
+            .type(InputType.Number)
+            .onChange((value: string) => {
+              this.inputValue = value;
+            })
+        }
+        .width('100%')
+        .padding({ left: 16, right: 16, top: 20 })
+        .justifyContent(FlexAlign.SpaceBetween)
+      }
+      .backgroundColor(Color.White)
+    }
+  }
+}

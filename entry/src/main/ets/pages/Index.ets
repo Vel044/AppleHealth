@@ -1,5 +1,6 @@
 // pages/Index.ets
 import { UserInfo, defaultUserInfo } from '../model/UserInfo';
+import { Health, DefaultHealth,HealthDataStore } from "../model/Health"
 import UserInfoCollect from './UserInfoCollect';
 import AbstractPage from './AbstractPage';
 import SharePage from  './SharePage';
@@ -8,6 +9,7 @@ import BrowsePage from  './BrowsePage';
 
 // 确保在应用启动时就初始化持久化存储
 PersistentStorage.persistProp('userInfo', defaultUserInfo);
+
 
 @Entry
 @Component
@@ -25,6 +27,9 @@ struct Index {
       this.userInfo.userHeight > 0 &&
       this.userInfo.weight > 0
   }
+
+
+
 
   @Builder UserInfoCollectBuilder(){
     UserInfoCollect({ showSheet: $isShow })
@@ -116,7 +121,6 @@ struct MainTabs {
     Tabs({ barPosition: BarPosition.End }) {
       TabContent() {
         AbstractPage()
-
       }.tabBar(this.tabBarDynamic(0))
 
       TabContent() {

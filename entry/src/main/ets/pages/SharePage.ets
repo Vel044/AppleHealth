@@ -116,9 +116,11 @@ export default struct SharePage {
                 .padding({ left:16,right:16,top:14,bottom:14 })
                 .width('100%')
                 .backgroundColor(Color.Transparent)
-                Divider()
-                  .height(1)
-                  .margin({left:16})
+                if(index<1) {
+                  Divider()
+                    .height(1)
+                    .margin({ left: 16 })
+                }
               }
 
             }
@@ -155,10 +157,7 @@ export default struct SharePage {
       }
 
 
-
     }.padding({left:20,right:20})
-
-
 
 
 
