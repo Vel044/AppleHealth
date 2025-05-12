@@ -1,10 +1,10 @@
 // pages/UserInfoCollect.ets
 import { UserInfo, defaultUserInfo } from '../model/UserInfo';
-
 import { notificationManager } from '@kit.NotificationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { common } from '@kit.AbilityKit';
+import { Health ,HealthDataStore} from '../model/Health';
 
 const TAG: string = '[PublishOperation]';
 const DOMAIN_NUMBER: number = 0xFF00;
@@ -35,6 +35,10 @@ export default struct UserInfoCollect {
   @Link showSheet: boolean;
 
   private swiperController: SwiperController = new SwiperController()
+
+  private healthDataStore: HealthDataStore = HealthDataStore.getInstance();
+  @StorageLink('healthHistory') healthHistory :Health[]=this.healthDataStore.healthHistory
+  @StorageLink('todayHealth') todayHealth:Health= AppStorage.get('todayHealth') ?? this.healthHistory[6];
 
   // 0.欢迎页
   @Builder
@@ -421,6 +425,7 @@ export default struct UserInfoCollect {
                 onAccept: (result) => {
                   const weightValue = parseFloat(result.value.toString().substring(0,result.value.length-2));
                   this.tempUserInfo.weight = weightValue;
+
                 }
               });
             })
@@ -434,18 +439,29 @@ export default struct UserInfoCollect {
         .onClick(() => {
           console.log('用户信息已保存:');
           this.userInfo = this.tempUserInfo;
+          AppStorage.setOrCreate("userInfo", this.userInfo)
+
+          let healthHistory = this.healthHistory;
+          let todayHealth = this.todayHealth
+
+          const lastRecord = healthHistory[healthHistory.length - 1];
+
       
           // 计算并更新BMI值
           const bmi = Math.round((this.userInfo.weight / (this.userInfo.userHeight * this.userInfo.userHeight / 10000)) * 10) / 10;
-          
-
-
           // 更新持久化存储数据
-        
           AppStorage.setOrCreate('currentBMI', bmi);
           AppStorage.setOrCreate('todayHeight', this.userInfo.userHeight);
           AppStorage.setOrCreate('todayWeight', this.userInfo.weight);
           AppStorage.setOrCreate('todayBMI', bmi);
+
+
+          lastRecord.bmi=bmi;
+          lastRecord.height=this.userInfo.userHeight;
+          lastRecord.weight=this.userInfo.weight;
+          this.healthHistory[6]=lastRecord;
+          AppStorage.setOrCreate('healthHistory',  this.healthHistory);
+
           
           this.showSheet = false;
         })

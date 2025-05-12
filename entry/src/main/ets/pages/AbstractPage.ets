@@ -273,12 +273,24 @@ export default struct AbstractPage {
             .alignSelf(ItemAlign.Start)
 
           Row(){
-            Text($$.toString())
-              .fontSize(30)
-              .alignSelf(ItemAlign.End)
-              .fontWeight(FontWeight.Bold)
+            if(fitness=="身高体重指数") {
+              Text(this.tempBMI.toString())
+                .fontSize(30)
+                .alignSelf(ItemAlign.End)
+                .fontWeight(FontWeight.Bold)
+            }else if(fitness=="身高") {
+              Text(this.todayHeight.toString())
+                .fontSize(30)
+                .alignSelf(ItemAlign.End)
+                .fontWeight(FontWeight.Bold)
+            }else if(fitness=="体重"){
+              Text(this.todayWeight.toString())
+                .fontSize(30)
+                .alignSelf(ItemAlign.End)
+                .fontWeight(FontWeight.Bold)
+            }
 
-            Text(unit)
+              Text(unit)
               .fontSize(16)
               .fontWeight(FontWeight.Bold)
               .fontColor(Color.Gray)
@@ -365,7 +377,7 @@ export default struct AbstractPage {
           this.fitnessTemplate("活动能量", this.todayActiveEnergy, "千卡")
           this.bodyTemplate("身高", this.todayHeight, "cm")
           this.bodyTemplate("体重", this.todayWeight, "kg")
-          this.bodyTemplate("身高体重指数", this.todayBMI, "BMI")
+          this.bodyTemplate("身高体重指数", this.tempBMI, "BMI")
           this.fitnessTemplate("已爬楼层", this.todayFlightsClimbed, "层")
         }
       }

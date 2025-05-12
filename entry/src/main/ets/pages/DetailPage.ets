@@ -528,6 +528,7 @@ struct DetailPage {
             this.data = Number(this.inputValue)
             let healthHistory = this.healthHistory;
             let todayHealth = this.todayHealth
+
             if (healthHistory && healthHistory.length > 0) {
               const lastRecord = healthHistory[healthHistory.length - 1];
               const value = parseFloat(this.inputValue);
