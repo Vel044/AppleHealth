@@ -6,6 +6,8 @@
     "pages/SharePage",
     "pages/UserInfoCollect",
     "pages/DetailPage",
-    "pages/CategoryDetailPage"
+    "pages/CategoryDetailPage",
+    "pages/AppPage",
+    "pages/ResearchPage"
   ]
 }

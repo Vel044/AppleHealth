@@ -1,4 +1,5 @@
 // pages/SharePage.ets
+import router from '@ohos.router'
 
 @Entry
 @Component
@@ -120,6 +121,23 @@ export default struct SharePage {
             }
             .onClick(() => {
               // 页面跳转逻辑
+              if (item === 'App') {
+                // 跳转到App页面
+                router.pushUrl({
+                  url: 'pages/AppPage',
+                  params: {
+                    title: 'App'
+                  }
+                })
+              } else if (item === '调研') {
+                // 跳转到调研页面
+                router.pushUrl({
+                  url: 'pages/ResearchPage',
+                  params: {
+                    title: '调研'
+                  }
+                })
+              }
             })
           }, (item: string) => item)
 

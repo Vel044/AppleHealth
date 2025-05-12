@@ -5,7 +5,6 @@ import router from '@ohos.router'
 
 interface  RouTmp{
   title:string
-
 }
 
 @Entry
