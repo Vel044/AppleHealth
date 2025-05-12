@@ -1,8 +1,18 @@
 // pages/AbstractPage.ets
-import { Health, DefaultHealth,HealthDataStore } from "../model/Health"
+import { Health,HealthDataStore } from "../model/Health"
 import { UserInfo, defaultUserInfo } from '../model/UserInfo';
+import geoLocationManager from '@ohos.geoLocationManager';
+import sensor from '@ohos.sensor';
+import abilityAccessCtrl from '@ohos.abilityAccessCtrl';
+import common from '@ohos.app.ability.common';
+import StepsUtil from '../common/utils/StepsUtil';
+import { CommonConstants } from '../common/constants/CommonConstants';
+import NumberUtil from '../common/utils/NumberUtil';
+import Logger from '../common/utils/Logger';
+import LocationUtil from '../common/utils/LocationUtil';
 
 import router from '@ohos.router'
+import Intl from '@ohos.intl';
 
 // 添加PersistentStorage初始化
 PersistentStorage.persistProp('todaySteps', 624);
@@ -11,6 +21,10 @@ PersistentStorage.persistProp('todayHeight', 173);
 PersistentStorage.persistProp('todayWeight', 65.5);
 PersistentStorage.persistProp('todayBMI', 21.8);
 PersistentStorage.persistProp('todayFlightsClimbed', 8);
+
+const TAG: string = 'AbstractPage';
+
+
 
 @Entry
 @Component
@@ -33,6 +47,21 @@ export default struct AbstractPage {
   @StorageLink('todayFlightsClimbed') todayFlightsClimbed: number = 8;
 
 
+
+  @State currentSteps: string = CommonConstants.INITIALIZATION_VALUE;
+  @Provide stepGoal: string = '';
+  @State oldSteps: string = '';
+  @State startPosition: string = '';
+  @State currentLocation: string = '';
+  @State locale: string = new Intl.Locale().language;
+  @State latitude: number = 0;
+  @State longitude: number = 0;
+  @State progressValue: number = 0;
+  @State isStart: boolean = true;
+
+  private context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
+
+
   aboutToAppear(): void {
     // 计算BMI值
     this.calculateBMI();
@@ -45,7 +74,7 @@ export default struct AbstractPage {
       this.todayHealth.bmi = this.tempBMI;
       this.todayBMI = this.tempBMI;
     }
-    
+
     // 从todayHealth同步数据到独立存储
     this.todaySteps = this.todayHealth.steps;
     this.todayActiveEnergy = this.todayHealth.activeEnergy;
@@ -53,8 +82,127 @@ export default struct AbstractPage {
     this.todayWeight = this.todayHealth.weight;
     this.todayBMI = this.todayHealth.bmi;
     this.todayFlightsClimbed = this.todayHealth.flightsClimbed;
+
+    // 初始化步数并请求权限、
+    StepsUtil.putStorageValue(CommonConstants.IS_START, CommonConstants.TRUE);
+    this.init();
+    this.requestPermissions();
   }
 
+
+  aboutToDisappear() {
+    // 关闭传感器监听
+    sensor.off(sensor.SensorId.PEDOMETER);
+  }
+
+
+  onPageShow() {
+    this.init();
+    this.requestPermissions();
+  }
+
+  init() {
+    this.isStart = true;
+    StepsUtil.getStorageValue(CommonConstants.CURRENT_STEPS).then((res: string) => {
+      if (StepsUtil.checkStrIsEmpty(res)) {
+        return;
+      }
+      this.currentSteps = res;
+    });
+
+    StepsUtil.getStorageValue(CommonConstants.PROGRESS_VALUE_TAG).then((res: string) => {
+      if (StepsUtil.checkStrIsEmpty(res)) {
+        return;
+      }
+      this.progressValue = NumberUtil._parseInt(res, 10);
+    });
+
+    StepsUtil.getStorageValue(CommonConstants.START_POSITION).then((res: string) => {
+      if (StepsUtil.checkStrIsEmpty(res)) {
+        return;
+      }
+      this.startPosition = res;
+    });
+
+    StepsUtil.getStorageValue(CommonConstants.OLD_STEPS).then((res: string) => {
+      if (StepsUtil.checkStrIsEmpty(res)) {
+        return;
+      }
+      this.oldSteps = res;
+    });
+
+    StepsUtil.getStorageValue(CommonConstants.STEP_GOAL).then((res: string) => {
+      if (StepsUtil.checkStrIsEmpty(res)) {
+        return;
+      }
+      this.stepGoal = res;
+    });
+  }
+
+  requestPermissions(): void {
+    let atManager = abilityAccessCtrl.createAtManager();
+     try {
+      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {
+        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {
+          return;
+        }
+        const that = this;
+        try {
+          sensor.on(sensor.SensorId.PEDOMETER, (data) => {
+            try {
+              if (that.isStart) {
+                if (StepsUtil.checkStrIsEmpty(that.oldSteps)) {
+                  that.oldSteps = data.steps.toString();
+                  StepsUtil.putStorageValue(CommonConstants.OLD_STEPS, that.oldSteps);
+                } else {
+                  that.currentSteps = (data.steps - NumberUtil._parseInt(that.oldSteps, 10)).toString();
+                }
+              } else {
+                that.currentSteps = data.steps.toString();
+              }
+
+              if (StepsUtil.checkStrIsEmpty(that.stepGoal) || !that.isStart) {
+                return;
+              }
+              StepsUtil.putStorageValue(CommonConstants.CURRENT_STEPS, that.currentSteps);
+              that.progressValue = StepsUtil.getProgressValue(NumberUtil._parseInt(that.stepGoal, 10),
+                NumberUtil._parseInt(that.currentSteps, 10));
+              StepsUtil.putStorageValue(CommonConstants.PROGRESS_VALUE_TAG, String(that.progressValue));
+            } catch (err) {
+              Logger.error(TAG, 'Sensor on err' + JSON.stringify(err));
+            }
+          }, { interval: CommonConstants.SENSOR_INTERVAL });
+
+        } catch (err) {
+          console.error('On fail, errCode: ' + JSON.stringify(err));
+        }
+
+        LocationUtil.geolocationOn((location: geoLocationManager.Location) => {
+          if (this.latitude === location.latitude && this.longitude === location.longitude) {
+            return;
+          }
+          this.latitude = location.latitude;
+          this.longitude = location.longitude;
+          let reverseGeocodeRequest: geoLocationManager.ReverseGeoCodeRequest = {
+            'locale': this.locale.toString().includes('zh') ? 'zh' : 'en',
+            'latitude': this.latitude,
+            'longitude': this.longitude
+          };
+          geoLocationManager.getAddressesFromLocation(reverseGeocodeRequest).then(data => {
+            if (data[0].placeName) {
+              this.currentLocation = data[0].placeName;
+            }
+          }).catch((err: Error) => {
+            Logger.error(TAG, 'GetAddressesFromLocation err ' + JSON.stringify(err));
+          });
+        });
+      }).catch((err: Error) => {
+        Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));
+      })
+    } catch (err) {
+      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));
+    }
+  }
 
 
   calculateBMI(): void {
@@ -62,7 +210,6 @@ export default struct AbstractPage {
       this.tempBMI = Math.round((this.userInfo.weight / (this.userInfo.userHeight * this.userInfo.userHeight / 10000)) * 10) / 10;
     }
   }
-
 
 
   private calculateHealthPercentage(healthParam: string, dayIndex: number,healthHistory:Health[]): string {
@@ -188,11 +335,19 @@ export default struct AbstractPage {
         Column(){
 
           Row(){
-            Text(data+"")
+            // if (fitness=="步数") {
+            //   Text(this.currentSteps)
+            //     .fontSize(30)
+            //     .alignSelf(ItemAlign.End)
+            //     .fontWeight(FontWeight.Bold)
+            //
+            //
+            // }else {
+            Text(data + "")
               .fontSize(30)
               .alignSelf(ItemAlign.End)
               .fontWeight(FontWeight.Bold)
-
+            // }
             Text(unit)
               .fontSize(16)
               .fontWeight(FontWeight.Bold)
@@ -386,3 +541,4 @@ export default struct AbstractPage {
 
   }
 }
+

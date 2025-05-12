@@ -1,11 +1,29 @@
 import router from '@ohos.router';
 import { Health, HealthDataStore ,DefaultHealth} from '../model/Health';
+import abilityAccessCtrl from '@ohos.abilityAccessCtrl';
+import common from '@ohos.app.ability.common';
+import geoLocationManager from '@ohos.geoLocationManager';
+import promptAction from '@ohos.promptAction';
+import sensor from '@ohos.sensor';
+import Intl from '@ohos.intl';
+import { BackgroundUtil } from '../common/utils/BackgroundUtil';
+import { CompletionStatus } from '../view/CompletionStatus';
+import { CommonConstants } from '../common/constants/CommonConstants';
+import { CurrentSituation } from '../view/CurrentSituation';
+import LocationUtil from '../common/utils/LocationUtil';
+import Logger from '../common/utils/Logger';
+import NumberUtil from '../common/utils/NumberUtil';
+import StepsUtil from '../common/utils/StepsUtil';
+
 
 interface RouTmp {
   type: string,
   data: number,
   unit: string,
 }
+
+const TAG: string = 'DetailPage';
+
 
 @Entry
 @Component
@@ -15,6 +33,7 @@ struct DetailPage {
   @State data: number = this.params.data;
   @State unit: string = this.params.unit;
   @State selectedTimeRange: string = '周';
+
 
   private healthDataStore: HealthDataStore = HealthDataStore.getInstance();
   @StorageLink('healthHistory') healthHistory :Health[]=this.healthDataStore.healthHistory
@@ -28,6 +47,140 @@ struct DetailPage {
   @StorageLink('todayWeight') todayWeight: number = 65.5;
   @StorageLink('todayBMI') todayBMI: number = 21.8;
   @StorageLink('todayFlightsClimbed') todayFlightsClimbed: number = 8;
+
+  @State currentSteps: string = CommonConstants.INITIALIZATION_VALUE;
+  @Provide stepGoal: string = '';
+  @State oldSteps: string = '';
+  @State startPosition: string = '';
+  @State currentLocation: string = '';
+  @State locale: string = new Intl.Locale().language;
+  @State latitude: number = 0;
+  @State longitude: number = 0;
+  @State progressValue: number = 0;
+  @State isStart: boolean = true;
+  private context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
+  private TAG: string = 'DetailPage';
+
+  onPageShow() {
+    this.init();
+    this.requestPermissions();
+  }
+  
+  
+  aboutToAppear() {
+    // 初始化步数并请求权限
+    this.init();
+    this.requestPermissions();
+  }
+  
+  aboutToDisappear() {
+    // 关闭传感器监听
+    sensor.off(sensor.SensorId.PEDOMETER);
+  }
+
+  init() {
+    this.isStart = true;
+    StepsUtil.getStorageValue(CommonConstants.CURRENT_STEPS).then((res: string) => {
+      if (StepsUtil.checkStrIsEmpty(res)) {
+        return;
+      }
+      this.currentSteps = res;
+    });
+
+    StepsUtil.getStorageValue(CommonConstants.PROGRESS_VALUE_TAG).then((res: string) => {
+      if (StepsUtil.checkStrIsEmpty(res)) {
+        return;
+      }
+      this.progressValue = NumberUtil._parseInt(res, 10);
+    });
+
+    StepsUtil.getStorageValue(CommonConstants.START_POSITION).then((res: string) => {
+      if (StepsUtil.checkStrIsEmpty(res)) {
+        return;
+      }
+      this.startPosition = res;
+    });
+
+    StepsUtil.getStorageValue(CommonConstants.OLD_STEPS).then((res: string) => {
+      if (StepsUtil.checkStrIsEmpty(res)) {
+        return;
+      }
+      this.oldSteps = res;
+    });
+
+    StepsUtil.getStorageValue(CommonConstants.STEP_GOAL).then((res: string) => {
+      if (StepsUtil.checkStrIsEmpty(res)) {
+        return;
+      }
+      this.stepGoal = res;
+    });
+  }
+
+  requestPermissions(): void {
+    let atManager = abilityAccessCtrl.createAtManager();
+    try {
+      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {
+        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {
+          return;
+        }
+        const that = this;
+        try {
+          sensor.on(sensor.SensorId.PEDOMETER, (data) => {
+            try {
+              if (that.isStart) {
+                if (StepsUtil.checkStrIsEmpty(that.oldSteps)) {
+                  that.oldSteps = data.steps.toString();
+                  StepsUtil.putStorageValue(CommonConstants.OLD_STEPS, that.oldSteps);
+                } else {
+                  that.currentSteps = (data.steps - NumberUtil._parseInt(that.oldSteps, 10)).toString();
+                }
+              } else {
+                that.currentSteps = data.steps.toString();
+              }
+
+              if (StepsUtil.checkStrIsEmpty(that.stepGoal) || !that.isStart) {
+                return;
+              }
+              StepsUtil.putStorageValue(CommonConstants.CURRENT_STEPS, that.currentSteps);
+              that.progressValue = StepsUtil.getProgressValue(NumberUtil._parseInt(that.stepGoal, 10),
+                NumberUtil._parseInt(that.currentSteps, 10));
+              StepsUtil.putStorageValue(CommonConstants.PROGRESS_VALUE_TAG, String(that.progressValue));
+            } catch (err) {
+              Logger.error(TAG, 'Sensor on err' + JSON.stringify(err));
+            }
+          }, { interval: CommonConstants.SENSOR_INTERVAL });
+
+        } catch (err) {
+          console.error('On fail, errCode: ' + JSON.stringify(err));
+        }
+
+        LocationUtil.geolocationOn((location: geoLocationManager.Location) => {
+          if (this.latitude === location.latitude && this.longitude === location.longitude) {
+            return;
+          }
+          this.latitude = location.latitude;
+          this.longitude = location.longitude;
+          let reverseGeocodeRequest: geoLocationManager.ReverseGeoCodeRequest = {
+            'locale': this.locale.toString().includes('zh') ? 'zh' : 'en',
+            'latitude': this.latitude,
+            'longitude': this.longitude
+          };
+          geoLocationManager.getAddressesFromLocation(reverseGeocodeRequest).then(data => {
+            if (data[0].placeName) {
+              this.currentLocation = data[0].placeName;
+            }
+          }).catch((err: Error) => {
+            Logger.error(TAG, 'GetAddressesFromLocation err ' + JSON.stringify(err));
+          });
+        });
+      }).catch((err: Error) => {
+        Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));
+      })
+    } catch (err) {
+      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));
+    }
+  }
+
   private timeRanges: string[] = ['日', '周', '月', '6个月', '年'];
 
   private weekDays: string[] = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
@@ -207,6 +360,69 @@ struct DetailPage {
     }
   }
 
+  // 获取最后一天的健康参数值
+  private getLatestHealthValue(): string {
+    // 获取当前健康参数类型
+    const healthParam = this.getHealthParam();
+    
+    // 确保健康历史数据存在
+    if (!this.healthHistory || this.healthHistory.length === 0) {
+      return this.data.toString();
+    }
+    
+    // 获取最后一条记录
+    const lastRecord = this.healthHistory[this.healthHistory.length - 1];
+    let value: number;
+    
+    // 根据参数类型获取对应的值
+    switch (healthParam) {
+      case 'steps':
+        value = lastRecord.steps;
+        break;
+      case 'activeEnergy':
+        value = lastRecord.activeEnergy;
+        break;
+      case 'flightsClimbed':
+        value = lastRecord.flightsClimbed;
+        break;
+      case 'heartRate':
+        value = lastRecord.heartRate;
+        break;
+      case 'sleepAnalysis':
+        value = lastRecord.sleepAnalysis;
+        break;
+      case 'bloodOxygen':
+        value = lastRecord.bloodOxygen;
+        break;
+      case 'bodyTemperature':
+        value = lastRecord.bodyTemperature;
+        break;
+      case 'stressLevel':
+        value = lastRecord.stressLevel;
+        break;
+      case 'bmi':
+        value = lastRecord.bmi;
+        break;
+      case 'height':
+        value = lastRecord.height;
+        break;
+      case 'weight':
+        value = lastRecord.weight;
+        break;
+      default:
+        value = this.data;
+    }
+    
+    // 返回格式化后的值（保留一位小数）
+    if (Number.isInteger(value)) {
+      return value.toString();
+    } else {
+      return value.toFixed(1);
+    }
+  }
+
+
+
   build() {
     Column() {
       // 顶部导航栏
@@ -256,7 +472,7 @@ struct DetailPage {
         ListItem() {
           Column() {
             Row(){
-              Text(this.data.toString())
+              Text(this.getLatestHealthValue())
                 .fontSize(40)
                 .fontWeight(FontWeight.Bold)
 

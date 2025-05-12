@@ -7,6 +7,8 @@ import SharePage from  './SharePage';
 import BrowsePage from  './BrowsePage';
 
 
+const TAG: string = 'AbstractPage';
+
 
 // 确保在应用启动时就初始化持久化存储
 PersistentStorage.persistProp('userInfo', defaultUserInfo);

@@ -1,6 +1,4 @@
 // pages/BrowsePage.ets
-
-
 import router from '@ohos.router'
 
 interface HealthCategory{
@@ -11,6 +9,7 @@ interface HealthCategory{
 
 let Purple: string = "#E6E6FA";
 let Turquoise: string = "#40e0d0";
+
 
 @Entry
 @Component

@@ -9,6 +9,7 @@ export interface UserInfo {
   notificationAllowed: boolean; // 通知权限状态
 }
 
+
 export const defaultUserInfo: UserInfo = {
   surName: 'Vel',
   givenName:"Sensei",

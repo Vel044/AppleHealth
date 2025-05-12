@@ -12,8 +12,6 @@ export default struct SharePage {
         .colorBlend(Color.Blue)
         .width("15%")
         .margin({right:10})
-
-
       Column(){
         Text(text1)
           .fontWeight(FontWeight.Bold)
@@ -24,19 +22,15 @@ export default struct SharePage {
         Text(text2)
           .textAlign(TextAlign.Start)
           .fontColor(Color.Gray)
+          .width("100%")
           .fontSize(14)
       }.width("70%")
       .justifyContent(FlexAlign.Start)
       .margin({top:15,bottom:15})
-
-
-
     }
-
   }
 
   appAndResearch: string[] = ['App', '调研'];
-
 
   build() {
     List(){
