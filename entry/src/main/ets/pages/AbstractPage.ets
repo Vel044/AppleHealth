@@ -4,6 +4,13 @@ import { UserInfo, defaultUserInfo } from '../model/UserInfo';
 
 import router from '@ohos.router'
 
+// 添加PersistentStorage初始化
+PersistentStorage.persistProp('todaySteps', 624);
+PersistentStorage.persistProp('todayActiveEnergy', 10.2);
+PersistentStorage.persistProp('todayHeight', 173);
+PersistentStorage.persistProp('todayWeight', 65.5);
+PersistentStorage.persistProp('todayBMI', 21.8);
+PersistentStorage.persistProp('todayFlightsClimbed', 8);
 
 @Entry
 @Component
@@ -12,10 +19,18 @@ export default struct AbstractPage {
   @StorageLink('currentBMI') tempBMI: number = 0;
   date:Date=new Date();
 
-  @StorageLink('todayHealth') todayHealth:Health= AppStorage.get('todayHealth') ?? DefaultHealth;
-
   healthDataStore: HealthDataStore = HealthDataStore.getInstance();
   @StorageLink('healthHistory') healthHistory :Health[]=this.healthDataStore.healthHistory
+
+  @StorageLink('todayHealth') todayHealth:Health= AppStorage.get('todayHealth') ?? this.healthHistory[6];
+
+  // 添加六个健康数据的StorageLink
+  @StorageLink('todaySteps') todaySteps: number = 624;
+  @StorageLink('todayActiveEnergy') todayActiveEnergy: number = 10.2;
+  @StorageLink('todayHeight') todayHeight: number = 173;
+  @StorageLink('todayWeight') todayWeight: number = 65.5;
+  @StorageLink('todayBMI') todayBMI: number = 21.8;
+  @StorageLink('todayFlightsClimbed') todayFlightsClimbed: number = 8;
 
 
   aboutToAppear(): void {
@@ -24,10 +39,23 @@ export default struct AbstractPage {
     // 同步用户信息到健康数据
     if (this.userInfo && this.userInfo.userHeight > 0 && this.userInfo.weight > 0) {
       this.todayHealth.height = this.userInfo.userHeight;
+      this.todayWeight = this.userInfo.userHeight;
       this.todayHealth.weight = this.userInfo.weight;
+      this.todayWeight = this.userInfo.weight;
       this.todayHealth.bmi = this.tempBMI;
+      this.todayBMI = this.tempBMI;
     }
+    
+    // 从todayHealth同步数据到独立存储
+    this.todaySteps = this.todayHealth.steps;
+    this.todayActiveEnergy = this.todayHealth.activeEnergy;
+    this.todayHeight = this.todayHealth.height;
+    this.todayWeight = this.todayHealth.weight;
+    this.todayBMI = this.todayHealth.bmi;
+    this.todayFlightsClimbed = this.todayHealth.flightsClimbed;
   }
+
+
 
   calculateBMI(): void {
     if (this.userInfo && this.userInfo.userHeight > 0 && this.userInfo.weight > 0) {
@@ -131,8 +159,6 @@ export default struct AbstractPage {
   }
 
 
-
-
   @Builder
   private fitnessTemplate(fitness:string,data:number,unit:string){
     Column(){
@@ -182,8 +208,6 @@ export default struct AbstractPage {
         .alignSelf(ItemAlign.End)
         .margin({ left:15,bottom:5 })
 
-
-        // 修改调用部分
         if (fitness === "步数") {
           this.HistogramChart("steps");
         } else if (fitness === "活动能量") {
@@ -191,6 +215,7 @@ export default struct AbstractPage {
         } else if (fitness === "已爬楼层") {
           this.HistogramChart("flightsClimbed");
         }
+
 
       }.width("100%")
       .justifyContent(FlexAlign.SpaceBetween)
@@ -216,7 +241,7 @@ export default struct AbstractPage {
   }
  
   @Builder
-  private bodyTemplate(fitness: string = "身高体重指数", data: number = this.tempBMI, unit: string = "BMI") {
+  private bodyTemplate(fitness: string , $$: number , unit: string) {
     Column(){
       Row(){
         Row(){
@@ -248,7 +273,7 @@ export default struct AbstractPage {
             .alignSelf(ItemAlign.Start)
 
           Row(){
-            Text(data + "")
+            Text($$.toString())
               .fontSize(30)
               .alignSelf(ItemAlign.End)
               .fontWeight(FontWeight.Bold)
@@ -296,7 +321,7 @@ export default struct AbstractPage {
         url: 'pages/DetailPage',
         params: {
           type: fitness,
-          data: data,
+          data: $$,
           unit: unit
         }
       });
@@ -336,12 +361,12 @@ export default struct AbstractPage {
       // 置顶数据
       ListItem(){
         Column(){
-          this.fitnessTemplate("步数",this.todayHealth.steps,"步")
-          this.fitnessTemplate("活动能量",this.todayHealth.activeEnergy,"千卡")
-          this.bodyTemplate("身高", this.todayHealth.height, "cm")
-          this.bodyTemplate("体重", this.todayHealth.weight, "kg")
-          this.bodyTemplate("身高体重指数", this.tempBMI, "BMI")
-          this.fitnessTemplate("已爬楼层",this.todayHealth.flightsClimbed,"层")
+          this.fitnessTemplate("步数", this.todaySteps, "步")
+          this.fitnessTemplate("活动能量", this.todayActiveEnergy, "千卡")
+          this.bodyTemplate("身高", this.todayHeight, "cm")
+          this.bodyTemplate("体重", this.todayWeight, "kg")
+          this.bodyTemplate("身高体重指数", this.todayBMI, "BMI")
+          this.fitnessTemplate("已爬楼层", this.todayFlightsClimbed, "层")
         }
       }
 

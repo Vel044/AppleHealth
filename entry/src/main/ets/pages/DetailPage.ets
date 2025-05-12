@@ -15,10 +15,19 @@ struct DetailPage {
   @State data: number = this.params.data;
   @State unit: string = this.params.unit;
   @State selectedTimeRange: string = '周';
-  private healthDataStore: HealthDataStore = HealthDataStore.getInstance();
-  @StorageLink('todayHealth') todayHealth:Health= AppStorage.get('todayHealth') ?? DefaultHealth;
-  @StorageLink('healthHistory') healthHistory :Health[]=this.healthDataStore.healthHistory
 
+  private healthDataStore: HealthDataStore = HealthDataStore.getInstance();
+  @StorageLink('healthHistory') healthHistory :Health[]=this.healthDataStore.healthHistory
+  @StorageLink('todayHealth') todayHealth:Health= AppStorage.get('todayHealth') ?? this.healthHistory[6];
+
+
+  // 添加六个健康数据的StorageLink
+  @StorageLink('todaySteps') todaySteps: number = 624;
+  @StorageLink('todayActiveEnergy') todayActiveEnergy: number = 10.2;
+  @StorageLink('todayHeight') todayHeight: number = 173;
+  @StorageLink('todayWeight') todayWeight: number = 65.5;
+  @StorageLink('todayBMI') todayBMI: number = 21.8;
+  @StorageLink('todayFlightsClimbed') todayFlightsClimbed: number = 8;
   private timeRanges: string[] = ['日', '周', '月', '6个月', '年'];
 
   private weekDays: string[] = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
@@ -516,65 +525,75 @@ struct DetailPage {
           .fontColor('#007AFF')
           .onClick(() => {
             // 更新最后一天的数据
-            this.data=Number(this.inputValue)
+            this.data = Number(this.inputValue)
             let healthHistory = this.healthHistory;
+            let todayHealth = this.todayHealth
             if (healthHistory && healthHistory.length > 0) {
               const lastRecord = healthHistory[healthHistory.length - 1];
               const value = parseFloat(this.inputValue);
 
-            switch (this.getHealthParam()) {
+              switch (this.getHealthParam()) {
                 case 'steps':
                   lastRecord.steps = value;
-                  this.todayHealth.steps=value;
+                  todayHealth.steps = value;
+                  this.todaySteps = value;
                   break;
                 case 'activeEnergy':
                   lastRecord.activeEnergy = value;
-                  this.todayHealth.activeEnergy=value;
+                  todayHealth.activeEnergy = value;
+                  this.todayActiveEnergy = value;
                   break;
                 case 'flightsClimbed':
                   lastRecord.flightsClimbed = value;
-                  this.todayHealth.flightsClimbed=value;
+                  todayHealth.flightsClimbed = value;
+                  this.todayFlightsClimbed = value;
                   break;
                 case 'heartRate':
                   lastRecord.heartRate = value;
-                  this.todayHealth.heartRate=value;
+                  todayHealth.heartRate = value;
                   break;
                 case 'sleepAnalysis':
                   lastRecord.sleepAnalysis = value;
-                  this.todayHealth.sleepAnalysis=value;
+                  todayHealth.sleepAnalysis = value;
                   break;
                 case 'bloodOxygen':
                   lastRecord.bloodOxygen = value;
-                  this.todayHealth.bloodOxygen=value;
+                  todayHealth.bloodOxygen = value;
                   break;
-
                 case 'bodyTemperature':
                   lastRecord.bodyTemperature = value;
-                  this.todayHealth.bodyTemperature=value;
+                  todayHealth.bodyTemperature = value;
                   break;
                 case 'stressLevel':
                   lastRecord.stressLevel = value;
-                  this.todayHealth.stressLevel=value;
+                  todayHealth.stressLevel = value;
                   break;
                 case 'bmi':
                   lastRecord.bmi = value;
-                  this.todayHealth.bmi=value;
+                  todayHealth.bmi = value;
+                  this.todayBMI = value;
                   break;
                 case 'height':
                   lastRecord.height = value;
-                  this.todayHealth.height=value;
+                  todayHealth.height = value;
+                  this.todayHeight = value;
                   break;
                 case 'weight':
                   lastRecord.weight = value;
-                  this.todayHealth.weight=value;
+                  todayHealth.weight = value;
+                  this.todayWeight = value;
                   break;
               }
             }
-            let todayHealth=this.todayHealth
-
             AppStorage.set("healthHistory", [...healthHistory])
             AppStorage.set("todayHealth", todayHealth)
-            
+            // 确保数据同步到AppStorage
+            AppStorage.set('todaySteps', this.todaySteps);
+            AppStorage.set('todayActiveEnergy', this.todayActiveEnergy);
+            AppStorage.set('todayHeight', this.todayHeight);
+            AppStorage.set('todayWeight', this.todayWeight);
+            AppStorage.set('todayBMI', this.todayBMI);
+            AppStorage.set('todayFlightsClimbed', this.todayFlightsClimbed);
 
             this.isShowSheet = false;
           })

@@ -5,6 +5,7 @@
     "pages/BrowsePage",
     "pages/SharePage",
     "pages/UserInfoCollect",
-    "pages/DetailPage"
+    "pages/DetailPage",
+    "pages/CategoryDetailPage"
   ]
 }

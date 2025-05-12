@@ -1,4 +1,7 @@
 // model/Health.ets
+
+
+
 export interface Health {
   steps: number;                // 当日步数
   activeEnergy: number;         // 活动消耗能量（千卡）
@@ -33,7 +36,9 @@ export const DefaultHealth:Health = {
 @ObservedV2
 export class HealthDataStore {
   @Trace public healthHistory: Health[] = [];
+
   private static _instance: HealthDataStore;
+
 
   public static getInstance(): HealthDataStore {
     if (!HealthDataStore._instance) {

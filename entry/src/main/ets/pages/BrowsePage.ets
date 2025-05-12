@@ -1,5 +1,10 @@
 // pages/BrowsePage.ets
 
+
+import router from '@ohos.router'
+
+
+
 interface HealthCategory{
   icon: Resource,
   title: string,
@@ -94,6 +99,17 @@ export default struct BrowsePage {
     .margin({ top: 10, bottom: 20 })
   }
 
+    // 跳转到详情页
+  navigateToCategoryDetail(category: HealthCategory) {
+    router.pushUrl({
+      url: 'pages/CategoryDetailPage',
+      params: {
+        title: category.title,
+
+      }
+    });
+  }
+
   @Builder
   CategoryItem(icon: Resource, title: string, color: ResourceColor) {
     Row() {
@@ -120,6 +136,13 @@ export default struct BrowsePage {
     .justifyContent(FlexAlign.SpaceBetween)
     .alignItems(VerticalAlign.Center)
     .padding({ top: 12, bottom: 12 })
+    .onClick(() => {
+      // 获取对应的类别对象
+      const categoryObj = this.healthCategories.find(item => item.title === title);
+      if (categoryObj) {
+        this.navigateToCategoryDetail(categoryObj);
+      }
+    })
   }
 
   build() {

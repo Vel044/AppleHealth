@@ -7,9 +7,16 @@ import SharePage from  './SharePage';
 import BrowsePage from  './BrowsePage';
 
 
+
 // 确保在应用启动时就初始化持久化存储
 PersistentStorage.persistProp('userInfo', defaultUserInfo);
-
+// 初始化健康数据
+PersistentStorage.persistProp('todaySteps', 624);
+PersistentStorage.persistProp('todayActiveEnergy', 10.2);
+PersistentStorage.persistProp('todayHeight', 173);
+PersistentStorage.persistProp('todayWeight', 65.5);
+PersistentStorage.persistProp('todayBMI', 21.8);
+PersistentStorage.persistProp('todayFlightsClimbed', 8);
 
 @Entry
 @Component

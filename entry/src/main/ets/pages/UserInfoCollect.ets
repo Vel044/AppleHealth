@@ -24,7 +24,6 @@ for (let unit = 60; unit <= 400; unit++) { // 30*2=60 ~ 200*2=400
 }
 
 
-
 @Component
 export default struct UserInfoCollect {
   @StorageLink('userInfo') userInfo: UserInfo = defaultUserInfo;
@@ -439,8 +438,14 @@ export default struct UserInfoCollect {
           // 计算并更新BMI值
           const bmi = Math.round((this.userInfo.weight / (this.userInfo.userHeight * this.userInfo.userHeight / 10000)) * 10) / 10;
           
-          // 将BMI值存储到AppStorage中，以便AbstractPage可以访问
+
+
+          // 更新持久化存储数据
+        
           AppStorage.setOrCreate('currentBMI', bmi);
+          AppStorage.setOrCreate('todayHeight', this.userInfo.userHeight);
+          AppStorage.setOrCreate('todayWeight', this.userInfo.weight);
+          AppStorage.setOrCreate('todayBMI', bmi);
           
           this.showSheet = false;
         })
