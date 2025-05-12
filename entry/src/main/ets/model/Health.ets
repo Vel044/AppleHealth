@@ -1,7 +1,5 @@
 // model/Health.ets
 
-
-
 export interface Health {
   steps: number;                // 当日步数
   activeEnergy: number;         // 活动消耗能量（千卡）
@@ -72,7 +70,7 @@ export class HealthDataStore {
       
       // 生成一些随机数据作为示例
       const height = 173; // 身高保持不变
-      const weight = 65.5 + (Math.random() * 2 - 1); // 体重在64.5-66.5kg之间浮动
+      const weight = Math.round((65.5 + (Math.random() * 2 - 1))*10)/10; // 体重在64.5-66.5kg之间浮动
       const bmi = Math.round((weight / (height * height / 10000)) * 10) / 10; // 根据身高体重计算BMI
       
       records.push({

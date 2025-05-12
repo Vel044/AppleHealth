@@ -14,7 +14,7 @@ export const defaultUserInfo: UserInfo = {
   givenName:"Sensei",
   birthday: new Date(),
   gender: '男',
-  userHeight: 175,
+  userHeight: 0,
   weight:65.5,
   notificationAllowed: false
 }

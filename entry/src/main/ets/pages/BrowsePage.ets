@@ -3,8 +3,6 @@
 
 import router from '@ohos.router'
 
-
-
 interface HealthCategory{
   icon: Resource,
   title: string,
