@@ -794,11 +794,29 @@ struct DetailPage {
                   lastRecord.height = value;
                   todayHealth.height = value;
                   this.todayHeight = value;
+                  // 身高更新后重新计算BMI
+                  if (todayHealth.weight > 0) {
+                    const newBMI = Math.round((todayHealth.weight / (value * value / 10000)) * 10) / 10;
+                    lastRecord.bmi = newBMI;
+                    todayHealth.bmi = newBMI;
+                    this.todayBMI = newBMI;
+                    // 更新全局BMI
+                    AppStorage.set('currentBMI', newBMI);
+                  }
                   break;
                 case 'weight':
                   lastRecord.weight = value;
                   todayHealth.weight = value;
                   this.todayWeight = value;
+                  // 体重更新后重新计算BMI
+                  if (todayHealth.height > 0) {
+                    const newBMI = Math.round((value / (todayHealth.height * todayHealth.height / 10000)) * 10) / 10;
+                    lastRecord.bmi = newBMI;
+                    todayHealth.bmi = newBMI;
+                    this.todayBMI = newBMI;
+                    // 更新全局BMI
+                    AppStorage.set('currentBMI', newBMI);
+                  }
                   break;
               }
             }
@@ -811,7 +829,6 @@ struct DetailPage {
             AppStorage.set('todayWeight', this.todayWeight);
             AppStorage.set('todayBMI', this.todayBMI);
             AppStorage.set('todayFlightsClimbed', this.todayFlightsClimbed);
-
             this.isShowSheet = false;
           })
       }
