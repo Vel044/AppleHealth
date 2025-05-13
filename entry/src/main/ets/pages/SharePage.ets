@@ -42,7 +42,9 @@ export default struct SharePage {
           .fontWeight(FontWeight.Bold)
           .textAlign(TextAlign.Start)
           .width("100%")
+          .margin({top:15})
       }
+
 
       // 健康共享
       ListItem(){
@@ -105,7 +107,7 @@ export default struct SharePage {
                   Image($r("app.media.right_click"))
                     .width(20)
                     .height(20)
-                    .colorBlend(Color.Gray)
+                    .colorBlend(Color.Blue)
                 }
                 .justifyContent(FlexAlign.SpaceBetween)
                 .padding({ left:16,right:16,top:14,bottom:14 })

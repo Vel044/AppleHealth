@@ -14,6 +14,8 @@ import LocationUtil from '../common/utils/LocationUtil';
 import Logger from '../common/utils/Logger';
 import NumberUtil from '../common/utils/NumberUtil';
 import StepsUtil from '../common/utils/StepsUtil';
+import { GlobalHealthData } from "../model/Healthy";
+
 
 
 interface RouTmp {
@@ -829,6 +831,27 @@ struct DetailPage {
             AppStorage.set('todayWeight', this.todayWeight);
             AppStorage.set('todayBMI', this.todayBMI);
             AppStorage.set('todayFlightsClimbed', this.todayFlightsClimbed);
+
+
+            // 添加弹窗提醒
+            promptAction.showDialog({
+              title: '数据更新成功',
+              message: `您的${this.type}数据已成功更新为${this.inputValue}${this.unit}`,
+              buttons: [
+                {
+                  text: '确定',
+                  color: '#007AFF',
+                }
+              ],
+
+              alignment: DialogAlignment.Center,
+              offset: { dx: 0, dy: -100 } // 使弹窗在屏幕中央偏上位置显示
+            }).then(() => {
+              // 关闭底部弹出层
+              this.isShowSheet = false;
+            });
+
+
             this.isShowSheet = false;
           })
       }
@@ -840,13 +863,24 @@ struct DetailPage {
         Row() {
           Text('日期')
             .fontSize(16)
-          Text(this.selectedDate.toLocaleDateString())
+          TextInput({text: this.selectedDate.toLocaleDateString()})
             .fontSize(16)
             .backgroundColor('#F5F5F5')
             .padding(10)
             .borderRadius(8)
             .margin({ left: 10 })
             .width("80%")
+            .enableKeyboardOnFocus(false)
+            .onClick(() => {
+              DatePickerDialog.show({
+                start: new Date("2000-1-1"),
+                end: new Date(),
+                selected: this.selectedDate,
+                onDateAccept: (date) => {
+                  this.selectedDate = date;
+                }
+              });
+            })
         }
         .width('100%')
         .padding({ left: 16, right: 16, top: 20 })
@@ -855,18 +889,29 @@ struct DetailPage {
         Row() {
           Text('时间')
             .fontSize(16)
-          Text(this.selectedTime.toLocaleTimeString())
+          TextInput({text: this.selectedTime.toLocaleTimeString()})
             .fontSize(16)
             .backgroundColor('#F5F5F5')
             .padding(10)
             .borderRadius(8)
             .margin({ left: 10 })
             .width("80%")
+            .enableKeyboardOnFocus(false)
+            .onClick(() => {
+              DatePickerDialog.show({
+                start: new Date("1900-1-1"),
+                end: new Date(),
+                selected: this.selectedDate,
+                useMilitaryTime:false,
+                onDateAccept:((date)=>{
+                  this.selectedDate=date;
+                })
+              })
+            })
         }
         .width('100%')
         .padding({ left: 16, right: 16, top: 20 })
         .justifyContent(FlexAlign.SpaceBetween)
-
         Row() {
           Text(this.unit)
             .fontSize(16)

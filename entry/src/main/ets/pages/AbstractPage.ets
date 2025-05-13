@@ -3,16 +3,17 @@ import { Health,HealthDataStore } from "../model/Health"
 import { UserInfo, defaultUserInfo } from '../model/UserInfo';
 import geoLocationManager from '@ohos.geoLocationManager';
 import sensor from '@ohos.sensor';
-import abilityAccessCtrl from '@ohos.abilityAccessCtrl';
-import common from '@ohos.app.ability.common';
 import StepsUtil from '../common/utils/StepsUtil';
 import { CommonConstants } from '../common/constants/CommonConstants';
 import NumberUtil from '../common/utils/NumberUtil';
 import Logger from '../common/utils/Logger';
 import LocationUtil from '../common/utils/LocationUtil';
-
+import { GlobalHealthData } from "../model/Healthy";
 import router from '@ohos.router'
 import Intl from '@ohos.intl';
+import { AppStorageV2, curves } from "@kit.ArkUI"
+import { abilityAccessCtrl, common, Permissions } from '@kit.AbilityKit';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 // 添加PersistentStorage初始化
 PersistentStorage.persistProp('todaySteps', 624);
@@ -24,6 +25,32 @@ PersistentStorage.persistProp('todayFlightsClimbed', 8);
 
 const TAG: string = 'AbstractPage';
 
+
+
+
+const permissions: Array<Permissions> = ['ohos.permission.ACTIVITY_MOTION'];
+// 使用UIExtensionAbility：将common.UIAbilityContext 替换为common.UIExtensionContext
+function reqPermissionsFromUser(permissions: Array<Permissions>, context: common.UIAbilityContext): void {
+  let atManager: abilityAccessCtrl.AtManager = abilityAccessCtrl.createAtManager();
+  // requestPermissionsFromUser会判断权限的授权状态来决定是否唤起弹窗
+  atManager.requestPermissionsFromUser(context, permissions).then((data) => {
+    let grantStatus: Array<number> = data.authResults;
+    let length: number = grantStatus.length;
+    for (let i = 0; i < length; i++) {
+      if (grantStatus[i] === 0) {
+        // 用户授权，可以继续访问目标操作
+        console.log("123456允许")
+      } else {
+        // 用户拒绝授权，提示用户必须授权才能访问当前页面的功能，并引导用户到系统设置中打开相应的权限
+        console.log("123456拒绝")
+        return;
+      }
+    }
+    // 授权成功
+  }).catch((err: BusinessError) => {
+    console.error(`Failed to request permissions from user. Code is ${err.code}, message is ${err.message}`);
+  })
+}
 
 
 @Entry
@@ -46,7 +73,15 @@ export default struct AbstractPage {
   @StorageLink('todayBMI') todayBMI: number = 21.8;
   @StorageLink('todayFlightsClimbed') todayFlightsClimbed: number = 8;
 
+  healthData:GlobalHealthData = AppStorageV2.connect(GlobalHealthData,'HEALTH_KEY',()=>new GlobalHealthData())!
 
+
+  // 添加动态背景相关状态变量
+  @State gradientAngle: number = 0;
+  @State gradientOffset1: number = 0;
+  @State gradientOffset2: number = 0.3;
+  @State gradientOffset3: number = 0.6;
+  @State gradientOffset4: number = 0.9;
 
   @State currentSteps: string = CommonConstants.INITIALIZATION_VALUE;
   @Provide stepGoal: string = '';
@@ -59,7 +94,9 @@ export default struct AbstractPage {
   @State progressValue: number = 0;
   @State isStart: boolean = true;
 
-  private context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
+  //上下文
+  @State context: common.UIAbilityContext | null = null
+
 
 
   aboutToAppear(): void {
@@ -74,7 +111,7 @@ export default struct AbstractPage {
       this.todayHealth.bmi = this.tempBMI;
       this.todayBMI = this.tempBMI;
     }
-
+    this.healthData.startStepCounter()
     // 从todayHealth同步数据到独立存储
     this.todaySteps = this.todayHealth.steps;
     this.todayActiveEnergy = this.todayHealth.activeEnergy;
@@ -87,7 +124,49 @@ export default struct AbstractPage {
     StepsUtil.putStorageValue(CommonConstants.IS_START, CommonConstants.TRUE);
     this.init();
     this.requestPermissions();
+        
+      
+    // 启动背景动画
+    this.startBackgroundAnimation();
+
+    // 获取上下文，用于请求权限
+    this.context = getContext(this) as common.UIAbilityContext;
+
+    // 启动步数计数器
+    this.healthData.startStepCounter();
   }
+
+
+
+  // 添加背景动画方法
+  startBackgroundAnimation() {
+    // 渐变角度动画
+    animateTo({
+      duration: 10000,
+      tempo: 1.0,
+      curve: Curve.Linear,
+      iterations: -1, // 无限循环
+      playMode: PlayMode.Normal
+    }, () => {
+      this.gradientAngle = (this.gradientAngle + 360) % 360;
+    })
+    
+    // 渐变位置动画
+    animateTo({
+      duration: 8000,
+      tempo: 1.0,
+      curve: Curve.Ease,
+      iterations: -1,
+      playMode: PlayMode.Alternate
+    }, () => {
+      this.gradientOffset1 = (this.gradientOffset1 + 0.5) % 1;
+      this.gradientOffset2 = (this.gradientOffset2 + 0.5) % 1;
+      this.gradientOffset3 = (this.gradientOffset3 + 0.5) % 1;
+      this.gradientOffset4 = (this.gradientOffset4 + 0.5) % 1;
+    })
+  }
+
+
 
 
   aboutToDisappear() {
@@ -99,6 +178,7 @@ export default struct AbstractPage {
   onPageShow() {
     this.init();
     this.requestPermissions();
+    this.healthData.startStepCounter()
   }
 
   init() {
@@ -212,6 +292,7 @@ export default struct AbstractPage {
   }
 
 
+
   private calculateHealthPercentage(healthParam: string, dayIndex: number,healthHistory:Health[]): string {
 
     if (!healthHistory || healthHistory.length === 0) {
@@ -275,6 +356,7 @@ export default struct AbstractPage {
     }
 
 
+
     const percentage = ((currentValue - minValue) / (maxValue - minValue)) * 100;
     return `${Math.max(10, Math.min(100, percentage))}%`;
   }
@@ -336,13 +418,11 @@ export default struct AbstractPage {
 
           Row(){
             // if (fitness=="步数") {
-            //   Text(this.currentSteps)
+            //   Text(this.healthData.stepCount+"")
             //     .fontSize(30)
             //     .alignSelf(ItemAlign.End)
             //     .fontWeight(FontWeight.Bold)
-            //
-            //
-            // }else {
+            // } else {
             Text(data + "")
               .fontSize(30)
               .alignSelf(ItemAlign.End)
@@ -497,48 +577,48 @@ export default struct AbstractPage {
 
 
   build() {
-
-    List(){
-      // 摘要
-      ListItem()
-      {
-        Row(){
-          Text("摘要")
-            .fontSize(28)
-            .fontWeight(FontWeight.Bold)
-          Image($r("app.media.profile"))
-            .height(35)
-            .borderRadius(35)
-        }.justifyContent(FlexAlign.SpaceBetween)
-        .width("100%")
-        .margin({bottom:20,top:20})
-      }
-      // 置顶
-      ListItem(){
-        Row(){
-          Text("置顶")
-            .fontSize(22)
-            .fontWeight(FontWeight.Bold)
-          Text("编辑")
-            .fontSize(18)
-            .fontColor("#007AFF")
-        }.justifyContent(FlexAlign.SpaceBetween)
-        .width("100%")
-      }
-      // 置顶数据
-      ListItem(){
-        Column(){
-          this.fitnessTemplate("步数", this.todaySteps, "步")
-          this.fitnessTemplate("活动能量", this.todayActiveEnergy, "千卡")
-          this.bodyTemplate("身高", this.todayHeight, "cm")
-          this.bodyTemplate("体重", this.todayWeight, "kg")
-          this.bodyTemplate("身高体重指数", this.tempBMI, "BMI")
-          this.fitnessTemplate("已爬楼层", this.todayFlightsClimbed, "层")
+    Stack() {
+      List(){
+        // 摘要
+        ListItem()
+        {
+          Row(){
+            Text("摘要")
+              .fontSize(28)
+              .fontWeight(FontWeight.Bold)
+            Image($r("app.media.profile"))
+              .height(35)
+              .borderRadius(35)
+          }.justifyContent(FlexAlign.SpaceBetween)
+          .width("100%")
+          .margin({bottom:20,top:20})
         }
-      }
+        // 置顶
+        ListItem(){
+          Row(){
+            Text("置顶")
+              .fontSize(22)
+              .fontWeight(FontWeight.Bold)
+            Text("编辑")
+              .fontSize(18)
+              .fontColor("#007AFF")
+          }.justifyContent(FlexAlign.SpaceBetween)
+          .width("100%")
+        }
+        // 置顶数据
+        ListItem(){
+          Column(){
+            this.fitnessTemplate("步数", this.todaySteps, "步")
+            this.fitnessTemplate("活动能量", this.todayActiveEnergy, "千卡")
+            this.bodyTemplate("身高", this.todayHeight, "cm")
+            this.bodyTemplate("体重", this.todayWeight, "kg")
+            this.bodyTemplate("身高体重指数", this.tempBMI, "BMI")
+            this.fitnessTemplate("已爬楼层", this.todayFlightsClimbed, "层")
+          }
+        }
 
-    }.padding({left:20,right:20})
-
+      }.padding({left:20,right:20})
+    }
   }
 }
 

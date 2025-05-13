@@ -10,7 +10,6 @@ interface HealthCategory{
 let Purple: string = "#E6E6FA";
 let Turquoise: string = "#40e0d0";
 
-
 @Entry
 @Component
 export default struct BrowsePage {
@@ -158,7 +157,7 @@ export default struct BrowsePage {
         }
         .justifyContent(FlexAlign.SpaceBetween)
         .width('100%')
-        .padding({ top: 10, bottom: 10 })
+        .padding({ top: 15, bottom: 10 })
       }
 
       ListItem() {
