@@ -5,6 +5,7 @@ import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { common } from '@kit.AbilityKit';
 import { Health ,HealthDataStore} from '../model/Health';
+import { reminderAgentManager } from '@kit.BackgroundTasksKit';
 
 const TAG: string = '[PublishOperation]';
 const DOMAIN_NUMBER: number = 0xFF00;
@@ -221,9 +222,16 @@ export default struct UserInfoCollect {
             }).catch((err : BusinessError) => {
               hilog.error(DOMAIN_NUMBER, TAG, `isNotificationEnabled fail, code is ${err.code}, message is ${err.message}`);
             });
-
           }
 
+          notificationManager.requestEnableNotification().then(() => {
+            console.info("requestEnableNotification success");
+          }).catch((err: BusinessError) => {
+            console.error(`requestEnableNotification failed, code is ${err.code}, message is ${err.message}`);
+          });
+          if (notificationManager.isNotificationEnabledSync()) {
+            this.state = "已经获取到通知权限"
+          }
           this.swiperController.showNext()
         })
         .backgroundColor("#419cff")
@@ -435,6 +443,7 @@ export default struct UserInfoCollect {
         .strokeWidth(1)
         .margin({bottom:5})
 
+
       Button('下一步', { type: ButtonType.Capsule })
         .onClick(() => {
           console.log('用户信息已保存:');
@@ -461,9 +470,25 @@ export default struct UserInfoCollect {
           lastRecord.weight=this.userInfo.weight;
           this.healthHistory[6]=lastRecord;
           AppStorage.setOrCreate('healthHistory',  this.healthHistory);
-
           
-          this.showSheet = false;
+          // 创建健康提醒
+          this.createHealthReminder();
+
+          // 显示提醒弹窗
+          AlertDialog.show({
+            title: '设置完成',
+            message: '您的健康信息已成功保存！\n现在可以开始使用健康应用了。',
+            autoCancel: true,
+            alignment: DialogAlignment.Center,
+            offset: { dx: 0, dy: -20 },
+            primaryButton: {
+              value: '确定',
+              action: () => {
+                console.log('用户确认信息设置完成');
+                this.showSheet = false;
+              }
+            }
+          });
         })
     }
 
@@ -572,6 +597,93 @@ export default struct UserInfoCollect {
       this.tempUserInfo.userHeight > 0 &&
       this.tempUserInfo.weight > 0
   }
+
+  private reminderId: number = 0;
+  @State state: string = "订阅状态"
+
+    // 创建健康提醒
+  private createHealthReminder() {
+    let targetReminderAgent: reminderAgentManager.ReminderRequestTimer = {
+      reminderType: reminderAgentManager.ReminderType.REMINDER_TYPE_TIMER, // 提醒类型为倒计时类型
+      triggerTimeInSeconds: 10,
+      actionButton: [ // 设置弹出的提醒通知信息上显示的按钮类型和标题
+        {
+          title: 'close',
+          type: reminderAgentManager.ActionButtonType.ACTION_BUTTON_TYPE_CLOSE
+        }
+      ],
+      wantAgent: { // 点击提醒通知后跳转的目标UIAbility信息
+        pkgName: 'com.example.myapplication',
+        abilityName: 'EntryAbility'
+      },
+      maxScreenWantAgent: { // 全屏显示提醒到达时自动拉起的目标Ability信息
+        pkgName: 'com.example.myapplication',
+        abilityName: 'EntryAbility'
+      },
+      title: 'this is title', // 指明提醒标题
+      content: 'this is content', // 指明提醒内容
+      expiredContent: 'this reminder has expired', // 指明提醒过期后需要显示的内容
+      notificationId: 100, // 指明提醒使用的通知的ID号，相同ID号的提醒会覆盖
+      slotType: notificationManager.SlotType.SOCIAL_COMMUNICATION // 指明提醒的Slot类型
+    }
+
+    try {
+      reminderAgentManager.publishReminder(targetReminderAgent).then(res => {
+        console.info('publishReminder promise reminderId: ' + res);
+        let reminderId: number = res;
+        // ...
+      })
+    } catch (error) {
+      console.info('publishReminder code: ' + error.code + ' message:' + error.message);
+    }
+
+
+    // 创建一个每天提醒用户记录健康数据的闹钟提醒
+    let healthReminder: reminderAgentManager.ReminderRequestAlarm = {
+      reminderType: reminderAgentManager.ReminderType.REMINDER_TYPE_ALARM,
+      hour: 10,  // 每天晚上8点提醒
+      minute: 30,
+      daysOfWeek: [1, 2, 3, 4, 5, 6, 7],  // 每周7天都提醒
+      actionButton: [
+        {
+          title: '关闭',
+          type: reminderAgentManager.ActionButtonType.ACTION_BUTTON_TYPE_CLOSE
+        },
+        {
+          title: '稍后提醒',
+          type: reminderAgentManager.ActionButtonType.ACTION_BUTTON_TYPE_SNOOZE
+        }
+      ],
+      wantAgent: {
+        pkgName: 'com.example.applehealth',  // 请根据实际的包名修改
+        abilityName: 'EntryAbility'
+      },
+      maxScreenWantAgent: {
+        pkgName: 'com.example.applehealth',  // 请根据实际的包名修改
+        abilityName: 'EntryAbility'
+      },
+      title: '健康记录提醒',
+      content: '别忘了今天记录您的健康数据哦！',
+      expiredContent: '您错过了今天的健康记录',
+      snoozeContent: '稍后会再次提醒您',
+      notificationId: 1001,
+      snoozeTimes: 3,  // 最多延迟提醒3次
+      timeInterval: 10 * 60,  // 延迟提醒间隔10分钟
+      slotType: notificationManager.SlotType.SOCIAL_COMMUNICATION
+    };
+
+    // 发布提醒
+    reminderAgentManager.publishReminder(healthReminder).then((reminderId: number) => {
+      console.info('健康提醒创建成功，ID: ' + reminderId);
+      // 保存提醒ID，以便将来可以取消
+      AppStorage.setOrCreate('healthReminderId', reminderId);
+    }).catch((err: BusinessError) => {
+      console.error(`健康提醒创建失败，错误码: ${err.code}, 错误信息: ${err.message}`);
+    });
+
+  }
+
+
 }
 
 @Entry

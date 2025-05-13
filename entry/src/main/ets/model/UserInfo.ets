@@ -5,6 +5,7 @@ export interface UserInfo {
   birthday: Date;
   gender: string;
   userHeight: number;
+
   weight: number;
   notificationAllowed: boolean; // 通知权限状态
 }
