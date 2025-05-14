@@ -6,7 +6,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { common } from '@kit.AbilityKit';
 import { Health ,HealthDataStore} from '../model/Health';
 import { reminderAgentManager } from '@kit.BackgroundTasksKit';
-import { abilityAccessCtrl, bundleManager, Permissions } from '@kit.AbilityKit';
+import { abilityAccessCtrl, Permissions } from '@kit.AbilityKit';
 
 
 
@@ -486,13 +486,14 @@ export default struct UserInfoCollect {
 
 
       Button('下一步', { type: ButtonType.Capsule })
+        .enabled(this.validateForm())
         .onClick(() => {
           console.log('用户信息已保存:');
           this.userInfo = this.tempUserInfo;
           AppStorage.setOrCreate("userInfo", this.userInfo)
 
           let healthHistory = this.healthHistory;
-          let todayHealth = this.todayHealth
+          // let todayHealth = this.todayHealth
 
           const lastRecord = healthHistory[healthHistory.length - 1];
 
@@ -538,41 +539,6 @@ export default struct UserInfoCollect {
 
   // 修改后的页面构建方法
   build() {
-    // Stack({ alignContent: Alignment.Center }) {
-    //   // 0.欢迎页
-    //   if (this.currentStep === 0) {
-    //     Column() {
-    //       this.WelcomePage()
-    //     }
-    //     .transition(this.getTransitionEffect(0))
-    //   }
-    //
-    //   // 1.隐私协议页
-    //   if (this.currentStep === 1) {
-    //     Column() {
-    //       this.PrivacyPage()
-    //     }
-    //     .transition(this.getTransitionEffect(1))
-    //   }
-    //
-    //   // 2.通知权限页
-    //   if (this.currentStep === 2) {
-    //     Column() {
-    //       this.NotificationPage()
-    //     }
-    //     .transition(this.getTransitionEffect(2))
-    //   }
-    //
-    //   // 3.信息收集页
-    //   if (this.currentStep === 3) {
-    //     Column() {
-    //       this.InfoCollectPage()
-    //     }
-    //     .transition(this.getTransitionEffect(3))
-    //   }
-    // }
-    // .width('100%')
-    // .height('100%')
 
     Column(){
       Swiper(this.swiperController) {
@@ -601,6 +567,7 @@ export default struct UserInfoCollect {
         //   return false;
         // }
         // return true;
+        result=result
 
         return false;
       })
@@ -639,7 +606,7 @@ export default struct UserInfoCollect {
       this.tempUserInfo.weight > 0
   }
 
-  private reminderId: number = 0;
+  // private reminderId: number = 0;
   @State state: string = "订阅状态"
 
     // 创建健康提醒
@@ -671,7 +638,7 @@ export default struct UserInfoCollect {
     try {
       reminderAgentManager.publishReminder(targetReminderAgent).then(res => {
         console.info('publishReminder promise reminderId: ' + res);
-        let reminderId: number = res;
+        // let reminderId: number = res;
         // ...
       })
     } catch (error) {
@@ -696,11 +663,11 @@ export default struct UserInfoCollect {
         }
       ],
       wantAgent: {
-        pkgName: 'com.example.applehealth',  // 请根据实际的包名修改
+        pkgName: 'com.example.appleHealth',  // 请根据实际的包名修改
         abilityName: 'EntryAbility'
       },
       maxScreenWantAgent: {
-        pkgName: 'com.example.applehealth',  // 请根据实际的包名修改
+        pkgName: 'com.example.appleHealth',  // 请根据实际的包名修改
         abilityName: 'EntryAbility'
       },
       title: '健康记录提醒',

@@ -11,9 +11,8 @@ import LocationUtil from '../common/utils/LocationUtil';
 import { GlobalHealthData } from "../model/Healthy";
 import router from '@ohos.router'
 import Intl from '@ohos.intl';
-import { AppStorageV2, curves } from "@kit.ArkUI"
-import { abilityAccessCtrl, common, Permissions } from '@kit.AbilityKit';
-import { BusinessError } from '@kit.BasicServicesKit';
+import { AppStorageV2 } from "@kit.ArkUI"
+import { abilityAccessCtrl, common } from '@kit.AbilityKit';
 
 // 添加PersistentStorage初始化
 PersistentStorage.persistProp('todaySteps', 624);
@@ -28,29 +27,29 @@ const TAG: string = 'AbstractPage';
 
 
 
-const permissions: Array<Permissions> = ['ohos.permission.ACTIVITY_MOTION'];
-// 使用UIExtensionAbility：将common.UIAbilityContext 替换为common.UIExtensionContext
-function reqPermissionsFromUser(permissions: Array<Permissions>, context: common.UIAbilityContext): void {
-  let atManager: abilityAccessCtrl.AtManager = abilityAccessCtrl.createAtManager();
-  // requestPermissionsFromUser会判断权限的授权状态来决定是否唤起弹窗
-  atManager.requestPermissionsFromUser(context, permissions).then((data) => {
-    let grantStatus: Array<number> = data.authResults;
-    let length: number = grantStatus.length;
-    for (let i = 0; i < length; i++) {
-      if (grantStatus[i] === 0) {
-        // 用户授权，可以继续访问目标操作
-        console.log("123456允许")
-      } else {
-        // 用户拒绝授权，提示用户必须授权才能访问当前页面的功能，并引导用户到系统设置中打开相应的权限
-        console.log("123456拒绝")
-        return;
-      }
-    }
-    // 授权成功
-  }).catch((err: BusinessError) => {
-    console.error(`Failed to request permissions from user. Code is ${err.code}, message is ${err.message}`);
-  })
-}
+// const permissions: Array<Permissions> = ['ohos.permission.ACTIVITY_MOTION'];
+// // 使用UIExtensionAbility：将common.UIAbilityContext 替换为common.UIExtensionContext
+// function reqPermissionsFromUser(permissions: Array<Permissions>, context: common.UIAbilityContext): void {
+//   let atManager: abilityAccessCtrl.AtManager = abilityAccessCtrl.createAtManager();
+//   // requestPermissionsFromUser会判断权限的授权状态来决定是否唤起弹窗
+//   atManager.requestPermissionsFromUser(context, permissions).then((data) => {
+//     let grantStatus: Array<number> = data.authResults;
+//     let length: number = grantStatus.length;
+//     for (let i = 0; i < length; i++) {
+//       if (grantStatus[i] === 0) {
+//         // 用户授权，可以继续访问目标操作
+//         console.log("123456允许")
+//       } else {
+//         // 用户拒绝授权，提示用户必须授权才能访问当前页面的功能，并引导用户到系统设置中打开相应的权限
+//         console.log("123456拒绝")
+//         return;
+//       }
+//     }
+//     // 授权成功
+//   }).catch((err: BusinessError) => {
+//     console.error(`Failed to request permissions from user. Code is ${err.code}, message is ${err.message}`);
+//   })
+// }
 
 
 @Entry
@@ -300,7 +299,7 @@ export default struct AbstractPage {
     }
 
     const index = Math.min(Math.max(dayIndex, 0), healthHistory.length - 1);
-    const record = healthHistory[index];
+    // const record = healthHistory[index];
 
     let minValue = Number.MAX_VALUE;
     let maxValue = Number.MIN_VALUE;
@@ -415,19 +414,11 @@ export default struct AbstractPage {
       .width("100%")
       Row(){
         Column(){
-
           Row(){
-            // if (fitness=="步数") {
-            //   Text(this.healthData.stepCount+"")
-            //     .fontSize(30)
-            //     .alignSelf(ItemAlign.End)
-            //     .fontWeight(FontWeight.Bold)
-            // } else {
             Text(data + "")
               .fontSize(30)
               .alignSelf(ItemAlign.End)
               .fontWeight(FontWeight.Bold)
-            // }
             Text(unit)
               .fontSize(16)
               .fontWeight(FontWeight.Bold)
@@ -618,6 +609,8 @@ export default struct AbstractPage {
         }
 
       }.padding({left:20,right:20})
+      .width("100%")
+      .height("100%")
     }
   }
 }

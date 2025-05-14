@@ -1,20 +1,16 @@
 import router from '@ohos.router';
-import { Health, HealthDataStore ,DefaultHealth} from '../model/Health';
+import { Health, HealthDataStore } from '../model/Health';
 import abilityAccessCtrl from '@ohos.abilityAccessCtrl';
 import common from '@ohos.app.ability.common';
 import geoLocationManager from '@ohos.geoLocationManager';
 import promptAction from '@ohos.promptAction';
 import sensor from '@ohos.sensor';
 import Intl from '@ohos.intl';
-import { BackgroundUtil } from '../common/utils/BackgroundUtil';
-import { CompletionStatus } from '../view/CompletionStatus';
 import { CommonConstants } from '../common/constants/CommonConstants';
-import { CurrentSituation } from '../view/CurrentSituation';
 import LocationUtil from '../common/utils/LocationUtil';
 import Logger from '../common/utils/Logger';
 import NumberUtil from '../common/utils/NumberUtil';
 import StepsUtil from '../common/utils/StepsUtil';
-import { GlobalHealthData } from "../model/Healthy";
 
 
 
@@ -61,7 +57,7 @@ struct DetailPage {
   @State progressValue: number = 0;
   @State isStart: boolean = true;
   private context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
-  private TAG: string = 'DetailPage';
+  // private TAG: string = 'DetailPage';
 
   onPageShow() {
     this.init();
@@ -196,7 +192,7 @@ struct DetailPage {
     }
 
     const index = Math.min(Math.max(dayIndex, 0), healthHistory.length - 1);
-    const record = healthHistory[index];
+    // const record = healthHistory[index];
 
     let minValue = Number.MAX_VALUE;
     let maxValue = Number.MIN_VALUE;
@@ -319,48 +315,48 @@ struct DetailPage {
     .borderRadius(10)
     .padding(20)
   }
-
-  // 选项项目Builder函数
-  @Builder
-  private OptionItem(title: string, rightText: string = '', showDivider: boolean = true) {
-    Column() {
-      Row() {
-        Row() {
-          Text(title)
-            .fontSize(16)
-            .fontWeight(FontWeight.Normal)
-        }
-        .alignItems(VerticalAlign.Center)
-
-        Row() {
-          if (rightText) {
-            Text(rightText)
-              .fontSize(16)
-              .fontColor('#999999')
-              .margin({ right: 5 })
-          }
-
-          Image($r('app.media.right'))
-            .width(16)
-            .height(16)
-            .colorBlend("#c4c5c7")
-        }
-        .alignItems(VerticalAlign.Center)
-      }
-      .width('100%')
-      .justifyContent(FlexAlign.SpaceBetween)
-      .alignItems(VerticalAlign.Center)
-      .padding({ top: 12, bottom: 12 })
-
-      if (showDivider) {
-        Divider()
-          .strokeWidth(1)
-          .color('#e0e0e1')
-          .borderColor(Color.Transparent)
-          .backgroundColor(Color.Transparent)
-      }
-    }
-  }
+  //
+  // // 选项项目Builder函数
+  // @Builder
+  // private OptionItem(title: string, rightText: string = '', showDivider: boolean = true) {
+  //   Column() {
+  //     Row() {
+  //       Row() {
+  //         Text(title)
+  //           .fontSize(16)
+  //           .fontWeight(FontWeight.Normal)
+  //       }
+  //       .alignItems(VerticalAlign.Center)
+  //
+  //       Row() {
+  //         if (rightText) {
+  //           Text(rightText)
+  //             .fontSize(16)
+  //             .fontColor('#999999')
+  //             .margin({ right: 5 })
+  //         }
+  //
+  //         Image($r('app.media.right'))
+  //           .width(16)
+  //           .height(16)
+  //           .colorBlend("#c4c5c7")
+  //       }
+  //       .alignItems(VerticalAlign.Center)
+  //     }
+  //     .width('100%')
+  //     .justifyContent(FlexAlign.SpaceBetween)
+  //     .alignItems(VerticalAlign.Center)
+  //     .padding({ top: 12, bottom: 12 })
+  //
+  //     if (showDivider) {
+  //       Divider()
+  //         .strokeWidth(1)
+  //         .color('#e0e0e1')
+  //         .borderColor(Color.Transparent)
+  //         .backgroundColor(Color.Transparent)
+  //     }
+  //   }
+  // }
 
   // 获取最后一天的健康参数值
   private getLatestHealthValue(): string {
@@ -693,6 +689,7 @@ struct DetailPage {
         }
       }
       .width('100%')
+      .height('100%')
       .layoutWeight(1)
       .padding({ left: 16, right: 16 })
       .backgroundColor('#F5F5F5')

@@ -42,7 +42,11 @@ export default struct BrowsePage {
     // 初始化过滤后的类别为全部类别
     this.filteredCategories = [...this.healthCategories]
   }
+
+
   @State filteredCategories: Array<HealthCategory> = []
+
+
   // 过滤健康类别
   filterCategories(keyword: string) {
     if (keyword.trim() === '') {

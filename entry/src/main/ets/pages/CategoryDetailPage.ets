@@ -1,6 +1,4 @@
 // pages/CategoryDetailPage.ets
-
-
 import router from '@ohos.router'
 
 interface  RouTmp{
@@ -145,6 +143,8 @@ struct CategoryDetailPage {
         })
       }
       .backgroundColor('#f1f2f6')
+      .width("100%")
+      .height("100%")
       .margin({ left: 20, right: 20 })
 
     }
