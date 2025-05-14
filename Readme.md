@@ -74,10 +74,12 @@
     - [5.3.传感器集成](#53传感器集成)
       - [5.3.1.步数传感器](#531步数传感器)
   - [6.权限管理机制](#6权限管理机制)
+      - [权限管理流程示意图](#权限管理流程示意图)
     - [6.1.在`module.json5`声明权限](#61在modulejson5声明权限)
     - [6.2.权限关联](#62权限关联)
     - [6.3.权限申请](#63权限申请)
     - [6.4.授权检查](#64授权检查)
+    - [6.5.权限序列图](#65权限序列图)
   - [7.本地化适配](#7本地化适配)
     - [7.1.已实现](#71已实现)
     - [7.2.待实现](#72待实现)
@@ -530,6 +532,21 @@ graph TD
     class I sub;
 ```
 
+**页面跳转流程序列图**
+```mermaid
+sequenceDiagram
+    participant 用户
+    participant 当前页面
+    participant router
+    participant 目标页面
+    用户->>当前页面: 点击导航按钮
+    当前页面->>router: pushUrl()
+    router->>目标页面: 初始化
+    目标页面-->>router: aboutToAppear()
+    router-->>当前页面: 隐藏当前页
+    目标页面-->>用户: 渲染完成
+```
+
 #### 4.3.2.跳转逻辑说明表
 
 | 源页面          | 目标页面           | 触发条件                  | 参数传递                  |
@@ -546,21 +563,6 @@ graph TD
 
 
 
-
-
-          
-我需要查看model目录下的文件，特别是与健康数据管理相关的文件，以便了解HealthDataStore单例模式和健康指标计算逻辑的实现细节。
-        
-            
-toolName: view_files
-            
-status: success
-          
-            
-filePath: d:/Tasks/DevEcoStudioProjects/1/AppleHealth/entry/src/main/ets/model/Health.ets
-d:/Tasks/DevEcoStudioProjects/1/AppleHealth/entry/src/main/ets/model/Healthy.ets
-d:/Tasks/DevEcoStudioProjects/1/AppleHealth/entry/src/main/ets/model/UserInfo.ets
-          
 ## 5.健康数据管理
 
 ### 5.1.数据模型设计
@@ -668,6 +670,18 @@ classDiagram
 
 ## 6.权限管理机制
 
+#### 权限管理流程示意图
+```mermaid
+flowchart TD
+    A[声明权限] --> B[关联对象]
+    B --> C{权限检查}
+    C -- 已授权 --> D[执行操作]
+    C -- 未授权 --> E[动态申请]
+    E --> F{用户选择}
+    F -- 允许 --> D
+    F -- 拒绝 --> G[显示引导提示]
+```
+
 ### 6.1.在`module.json5`声明权限
 在`src/main/module.json5`中声明所需权限：
 ```json5
@@ -726,7 +740,21 @@ public static checkPermissions(context: common.UIAbilityContext) {
   }
 }
 ```
-
+### 6.5.权限序列图
+```mermaid
+sequenceDiagram
+    participant 用户
+    participant 界面
+    participant PermissionManager
+    participant 系统
+    用户->>界面: 点击需要权限的功能
+    界面->>PermissionManager: reqPermissionsFromUser()
+    PermissionManager->>系统: 请求权限弹窗
+    系统-->>用户: 显示权限请求
+    用户-->>系统: 允许/拒绝
+    系统-->>PermissionManager: 返回授权结果
+    PermissionManager-->>界面: 更新权限状态
+```
 
 ## 7.本地化适配
 
