@@ -1,6 +1,8 @@
 // pages/AppPage.ets
 import router from '@ohos.router'
 
+
+// 定义路由参数类型
 interface  RouTmp{
   title:string
 }
@@ -9,6 +11,7 @@ interface  RouTmp{
 @Entry
 @Component
 export default struct AppPage {
+  // 路由及其参数
   params: RouTmp = router.getParams() as RouTmp;
   @State title: string = this.params.title;
 

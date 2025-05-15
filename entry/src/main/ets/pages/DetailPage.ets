@@ -1,3 +1,6 @@
+// pages/DetailPage.ets
+
+// import这个文件中所需要的组件
 import router from '@ohos.router';
 import { Health, HealthDataStore } from '../model/Health';
 import abilityAccessCtrl from '@ohos.abilityAccessCtrl';
@@ -13,26 +16,28 @@ import NumberUtil from '../common/utils/NumberUtil';
 import StepsUtil from '../common/utils/StepsUtil';
 
 
-
+// 定义路由参数类型
 interface RouTmp {
   type: string,
   data: number,
   unit: string,
 }
 
+// 定义TAG常量
 const TAG: string = 'DetailPage';
 
 
 @Entry
 @Component
 struct DetailPage {
+  // 路由及其参数
   params: RouTmp = router.getParams() as RouTmp;
   @State type: string = this.params.type;
   @State data: number = this.params.data;
   @State unit: string = this.params.unit;
   @State selectedTimeRange: string = '周';
 
-
+  // 健康数据存储
   private healthDataStore: HealthDataStore = HealthDataStore.getInstance();
   @StorageLink('healthHistory') healthHistory :Health[]=this.healthDataStore.healthHistory
   @StorageLink('todayHealth') todayHealth:Health= AppStorage.get('todayHealth') ?? this.healthHistory[6];
@@ -46,6 +51,7 @@ struct DetailPage {
   @StorageLink('todayBMI') todayBMI: number = 21.8;
   @StorageLink('todayFlightsClimbed') todayFlightsClimbed: number = 8;
 
+  // State和Provide变量
   @State currentSteps: string = CommonConstants.INITIALIZATION_VALUE;
   @Provide stepGoal: string = '';
   @State oldSteps: string = '';
@@ -76,6 +82,8 @@ struct DetailPage {
     sensor.off(sensor.SensorId.PEDOMETER);
   }
 
+
+  // 初始化函数
   init() {
     this.isStart = true;
     StepsUtil.getStorageValue(CommonConstants.CURRENT_STEPS).then((res: string) => {
@@ -114,6 +122,7 @@ struct DetailPage {
     });
   }
 
+  // 请求权限
   requestPermissions(): void {
     let atManager = abilityAccessCtrl.createAtManager();
     try {
@@ -179,6 +188,7 @@ struct DetailPage {
     }
   }
 
+  // 定义获取时间
   private timeRanges: string[] = ['日', '周', '月', '6个月', '年'];
 
   private weekDays: string[] = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];

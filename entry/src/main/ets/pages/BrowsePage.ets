@@ -7,6 +7,7 @@ interface HealthCategory{
   color: ResourceColor|string
 }
 
+// 定义颜色
 let Purple: string = "#E6E6FA";
 let Turquoise: string = "#40e0d0";
 
@@ -32,6 +33,7 @@ export default struct BrowsePage {
     { icon: $r('app.media.sheet'), title: '临床文档', color: Color.Blue }
   ]
 
+  // 后面半模态会用到的状态
   @State changeValue: string = ''
   @State submitValue: string = ''
   controller: SearchController = new SearchController()
@@ -110,6 +112,7 @@ export default struct BrowsePage {
     });
   }
 
+  // 构建健康类别项
   @Builder
   CategoryItem(icon: Resource, title: string, color: ResourceColor) {
     Row() {
@@ -145,6 +148,7 @@ export default struct BrowsePage {
     })
   }
 
+  // 构建页面内容
   build() {
 
     List() {

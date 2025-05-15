@@ -2,6 +2,7 @@
 import router from '@ohos.router'
 
 
+// 路由参数
 interface  RouTmp{
   title:string
 }
@@ -9,6 +10,7 @@ interface  RouTmp{
 @Entry
 @Component
 export default struct ResearchPage {
+  // 获得路由参数
   params: RouTmp = router.getParams() as RouTmp;
   @State title: string = this.params.title;
 

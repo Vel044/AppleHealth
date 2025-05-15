@@ -218,6 +218,7 @@ export default struct AbstractPage {
     });
   }
 
+  // 请求权限
   requestPermissions(): void {
     let atManager = abilityAccessCtrl.createAtManager();
      try {
@@ -283,7 +284,7 @@ export default struct AbstractPage {
     }
   }
 
-
+  // 计算BMI
   calculateBMI(): void {
     if (this.userInfo && this.userInfo.userHeight > 0 && this.userInfo.weight > 0) {
       this.tempBMI = Math.round((this.userInfo.weight / (this.userInfo.userHeight * this.userInfo.userHeight / 10000)) * 10) / 10;
@@ -291,7 +292,7 @@ export default struct AbstractPage {
   }
 
 
-
+  // 计算健康百分比
   private calculateHealthPercentage(healthParam: string, dayIndex: number,healthHistory:Health[]): string {
 
     if (!healthHistory || healthHistory.length === 0) {
@@ -386,7 +387,7 @@ export default struct AbstractPage {
     .justifyContent(FlexAlign.SpaceEvenly)
   }
 
-
+  // 运动模板Builder函数
   @Builder
   private fitnessTemplate(fitness:string,data:number,unit:string){
     Column(){
@@ -465,7 +466,7 @@ export default struct AbstractPage {
     })
 
   }
- 
+  // 身体模板Builder函数
   @Builder
   private bodyTemplate(fitness: string , $$: number , unit: string) {
     Column(){
@@ -565,8 +566,7 @@ export default struct AbstractPage {
       });
     })
   }
-
-
+  // 构建页面
   build() {
     Stack() {
       List(){
