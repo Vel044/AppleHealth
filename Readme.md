@@ -1,8 +1,5 @@
 # AppleHealth 健康应用
-
-​	<img src="entry\src\main\resources\base\media\startIcon.png
-" alt="image-20250514193141889" style="zoom:40%;" />
-
+![startIcon](Image/startIcon.png)
 <!-- TOC -->
 ## 目录
 - [AppleHealth 健康应用](#applehealth-健康应用)
@@ -168,10 +165,10 @@ AppleHealth/
 
 ### 2.1 核心功能复刻
 - **首次启动向导**  
-  采用`PersistentStorage`实现用户信息持久化存储，二次启动自动跳过信息收集流程
-  
+  采用`PersistentStorage`实现用户信息持久化存储，二次启动自动跳过信息收集流程，删除软件重新安装可以再次召唤收集用户信息。
+
 - **健康数据看板**  
-  实时展示步数（`@ohos.sensor`）、活动能量（`HealthDataStore`计算）、BMI（基于`UserInfo`数据）等核心指标
+  实时展示步数（`@ohos.sensor`）、活动能量计算、BMI等核心指标。
 
 ### 2.2 数据展示系统
 - **分类浏览体系**  
@@ -179,18 +176,14 @@ AppleHealth/
 
 - **多维度可视化**  
   1:1复刻苹果健康应用的：
-  - 日/周/月趋势图（`<LineChart>`组件）
-  - 数据分布直方图（`<Histogram>`组件）
-  - 交互式时间轴（`<showTextPicker>`控件）
+  - 日/周/月**趋势图**（`<LineChart>`组件）
+  - 七天**外层预览**
+  - **交互式时间轴**（`<showTextPicker>`控件）
 
 ### 2.3 交互功能
-- **智能搜索**  
-  支持关键字过滤（`@Watch`状态监听）和分类标签组合查询
+- **智能搜索**  ：通过`Search`自考吗实现数据检索和过滤功能
+- **数据共享机制**  ：通过单例模式，实现数据共享与同步。
 
-- **数据共享机制**  
-  包含：
-  - 研究机构访问权限管理界面（`ResearchPage`占位）
-  - 第三方应用授权管理界面（`SharePage`实现）
 
 ### 2.4 创新扩展功能
 - **实时健康监测提醒**  

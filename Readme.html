@@ -1,0 +1,1177 @@
+<!DOCTYPE html><html><head>
+      <title>Readme</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+      
+      
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@11.5.0/dist/mermaid.min.js"></script>
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="applehealth-健康应用">AppleHealth 健康应用 </h1>
+<p><img src="Image/startIcon.png" alt="startIcon"></p>
+<h2 id="目录">目录 </h2>
+<ul>
+<li><a href="#applehealth-%E5%81%A5%E5%BA%B7%E5%BA%94%E7%94%A8">AppleHealth 健康应用</a>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+<li><a href="#1%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0">1.项目概述</a>
+<ul>
+<li><a href="#11%E9%A1%B9%E7%9B%AE%E7%AE%80%E4%BB%8B">1.1.项目简介</a></li>
+<li><a href="#12-%E7%9B%AE%E6%A0%87">1.2. 目标</a></li>
+<li><a href="#13%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF">1.3.技术路线</a></li>
+<li><a href="#14%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84">1.4.项目结构</a></li>
+</ul>
+</li>
+<li><a href="#2%E5%8A%9F%E8%83%BD%E7%89%B9%E6%80%A7">2.功能特性</a>
+<ul>
+<li><a href="#21-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%E5%A4%8D%E5%88%BB">2.1 核心功能复刻</a></li>
+<li><a href="#22-%E6%95%B0%E6%8D%AE%E5%B1%95%E7%A4%BA%E7%B3%BB%E7%BB%9F">2.2 数据展示系统</a></li>
+<li><a href="#23-%E4%BA%A4%E4%BA%92%E5%8A%9F%E8%83%BD">2.3 交互功能</a></li>
+<li><a href="#24-%E5%88%9B%E6%96%B0%E6%89%A9%E5%B1%95%E5%8A%9F%E8%83%BD">2.4 创新扩展功能</a></li>
+</ul>
+</li>
+<li><a href="#3%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84">3.技术架构</a>
+<ul>
+<li><a href="#%E6%9E%B6%E6%9E%84%E4%B8%8E%E6%8A%80%E6%9C%AF%E6%A0%88">架构与技术栈</a></li>
+</ul>
+</li>
+<li><a href="#4%E9%A1%B5%E9%9D%A2%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%85%B6%E8%B7%B3%E8%BD%AC%E9%80%BB%E8%BE%91">4.页面功能及其跳转逻辑</a>
+<ul>
+<li><a href="#41%E9%A1%B5%E9%9D%A2%E5%8A%9F%E8%83%BD">4.1.页面功能</a>
+<ul>
+<li><a href="#%E5%8A%9F%E8%83%BD%E4%B8%8E%E9%A1%B5%E9%9D%A2%E6%98%A0%E5%B0%84%E8%A1%A8">功能与页面映射表</a></li>
+</ul>
+</li>
+<li><a href="#42%E9%A1%B5%E9%9D%A2%E8%AF%A6%E6%83%85">4.2.页面详情</a>
+<ul>
+<li><a href="#421index%E4%B8%BB%E5%85%A5%E5%8F%A3">4.2.1.Index（主入口）</a></li>
+<li><a href="#422userinfocollect">4.2.2.UserInfoCollect</a>
+<ul>
+<li><a href="#4221%E5%8A%9F%E8%83%BD%E6%9E%B6%E6%9E%84">4.2.2.1.功能架构</a></li>
+<li><a href="#4222%E6%A0%B8%E5%BF%83%E4%BA%A4%E4%BA%92%E7%89%B9%E6%80%A7">4.2.2.2.核心交互特性</a></li>
+<li><a href="#4223%E5%AE%8C%E6%88%90%E4%BA%86%E4%BD%86%E6%98%AF%E5%B9%B6%E6%9C%AA%E8%8E%B7%E5%BE%97%E5%BC%80%E5%8F%91%E8%80%85%E6%9D%83%E9%99%90%E7%9A%84%E5%8A%9F%E8%83%BD">4.2.2.3.完成了但是并未获得开发者权限的功能</a></li>
+<li><a href="#4224%E5%AE%8C%E6%88%90%E4%BA%86%E4%BD%86%E6%98%AF%E8%A2%AB%E4%BF%AE%E6%94%B9%E6%8E%89%E7%9A%84%E5%8A%9F%E8%83%BD">4.2.2.4.完成了但是被修改掉的功能</a></li>
+</ul>
+</li>
+<li><a href="#423abstractpage">4.2.3.AbstractPage</a>
+<ul>
+<li><a href="#%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0">功能概述</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96">数据可视化</a></li>
+<li><a href="#%E9%A1%B5%E9%9D%A2%E6%A8%A1%E6%9D%BF%E7%BB%84%E4%BB%B6">页面模板组件</a></li>
+<li><a href="#abstractpage%E7%BB%84%E4%BB%B6%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86">AbstractPage组件生命周期管理</a></li>
+<li><a href="#%E6%9C%AA%E5%AE%8C%E5%85%A8%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD">未完全实现的功能</a>
+<ul>
+<li><a href="#%E5%8A%A8%E6%80%81ui%E6%95%88%E6%9E%9C">动态UI效果</a></li>
+<li><a href="#%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90">传感器集成</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#424detailpage">4.2.4.DetailPage</a>
+<ul>
+<li><a href="#%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0-1">功能概述</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B1%95%E7%A4%BA">数据可视化展示</a></li>
+<li><a href="#%E6%97%B6%E9%97%B4%E8%8C%83%E5%9B%B4%E5%88%87%E6%8D%A2">时间范围切换</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6">数据管理机制</a></li>
+<li><a href="#ui%E7%BB%84%E4%BB%B6%E5%A4%8D%E7%94%A8">UI组件复用</a></li>
+<li><a href="#%E9%A1%B5%E9%9D%A2%E4%BA%A4%E4%BA%92%E6%B5%81%E7%A8%8B">页面交互流程</a></li>
+<li><a href="#%E6%9C%AA%E6%9D%A5%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91">未来优化方向</a></li>
+</ul>
+</li>
+<li><a href="#425browsepage">4.2.5.BrowsePage</a>
+<ul>
+<li><a href="#%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0-2">功能概述</a></li>
+<li><a href="#%E6%90%9C%E7%B4%A2%E4%B8%8E%E8%BF%87%E6%BB%A4%E9%80%BB%E8%BE%91">搜索与过滤逻辑</a>
+<ul>
+<li><a href="#%E8%B7%AF%E7%94%B1%E5%AF%BC%E8%88%AA">路由导航</a></li>
+<li><a href="#ui%E7%BB%84%E4%BB%B6%E6%9E%84%E5%BB%BA">UI组件构建</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9C%AA%E6%9D%A5%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91-1">未来优化方向</a></li>
+</ul>
+</li>
+<li><a href="#426categorydetailpage">4.2.6.CategoryDetailPage</a>
+<ul>
+<li><a href="#%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0-3">功能概述</a></li>
+<li><a href="#%E4%BA%A4%E4%BA%92%E7%89%B9%E6%80%A7">交互特性</a></li>
+<li><a href="#%E6%9C%AA%E6%9D%A5%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91-2">未来优化方向</a></li>
+</ul>
+</li>
+<li><a href="#427sharepage">4.2.7.SharePage</a>
+<ul>
+<li><a href="#%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0-4">功能概述</a></li>
+<li><a href="#%E8%B7%AF%E7%94%B1%E5%AF%BC%E8%88%AA-1">路由导航</a>
+<ul>
+<li><a href="#%E8%A7%86%E8%A7%89%E8%AE%BE%E8%AE%A1">视觉设计</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9C%AA%E6%9D%A5%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91-3">未来优化方向</a></li>
+</ul>
+</li>
+<li><a href="#428researchpage">4.2.8.ResearchPage</a>
+<ul>
+<li><a href="#%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0-5">功能概述</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1">数据结构设计</a>
+<ul>
+<li><a href="#%E8%B7%AF%E7%94%B1%E5%AF%BC%E8%88%AA-2">路由导航</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#429apppage">4.2.9.AppPage</a>
+<ul>
+<li><a href="#%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0-6">功能概述</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1-1">数据结构设计</a></li>
+<li><a href="#%E8%B7%AF%E7%94%B1%E5%AF%BC%E8%88%AA-3">路由导航</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#43%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC%E9%80%BB%E8%BE%91">4.3.页面跳转逻辑</a>
+<ul>
+<li><a href="#431%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC%E9%80%BB%E8%BE%91%E7%A4%BA%E6%84%8F%E5%9B%BE">4.3.1.页面跳转逻辑示意图</a></li>
+<li><a href="#432%E8%B7%B3%E8%BD%AC%E9%80%BB%E8%BE%91%E8%AF%B4%E6%98%8E%E8%A1%A8">4.3.2.跳转逻辑说明表</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#5%E5%81%A5%E5%BA%B7%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86">5.健康数据管理</a>
+<ul>
+<li><a href="#51%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1">5.1.数据模型设计</a>
+<ul>
+<li><a href="#511%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">5.1.1.核心数据结构</a>
+<ul>
+<li><a href="#%E7%B1%BB%E5%9B%BE">类图</a></li>
+</ul>
+</li>
+<li><a href="#512%E5%85%A8%E5%B1%80%E5%81%A5%E5%BA%B7%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86">5.1.2.全局健康数据管理</a></li>
+</ul>
+</li>
+<li><a href="#52healthdatastore%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">5.2.HealthDataStore单例模式</a>
+<ul>
+<li><a href="#521%E8%AE%BE%E8%AE%A1%E5%8E%9F%E7%90%86">5.2.1.设计原理</a></li>
+<li><a href="#522%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%96%B9%E6%B3%95">5.2.2.数据管理方法</a></li>
+</ul>
+</li>
+<li><a href="#53%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90">5.3.传感器集成</a>
+<ul>
+<li><a href="#531%E6%AD%A5%E6%95%B0%E4%BC%A0%E6%84%9F%E5%99%A8">5.3.1.步数传感器</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6">6.权限管理机制</a>
+<ul>
+<li><a href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%E6%B5%81%E7%A8%8B%E7%A4%BA%E6%84%8F%E5%9B%BE">权限管理流程示意图</a></li>
+<li><a href="#61%E5%9C%A8modulejson5%E5%A3%B0%E6%98%8E%E6%9D%83%E9%99%90">6.1.在<code>module.json5</code>声明权限</a></li>
+<li><a href="#62%E6%9D%83%E9%99%90%E5%85%B3%E8%81%94">6.2.权限关联</a></li>
+<li><a href="#63%E6%9D%83%E9%99%90%E7%94%B3%E8%AF%B7">6.3.权限申请</a></li>
+<li><a href="#64%E6%8E%88%E6%9D%83%E6%A3%80%E6%9F%A5">6.4.授权检查</a></li>
+<li><a href="#65%E6%9D%83%E9%99%90%E5%BA%8F%E5%88%97%E5%9B%BE">6.5.权限序列图</a></li>
+</ul>
+</li>
+<li><a href="#7%E6%9C%AC%E5%9C%B0%E5%8C%96%E9%80%82%E9%85%8D">7.本地化适配</a>
+<ul>
+<li><a href="#71%E5%B7%B2%E5%AE%9E%E7%8E%B0">7.1.已实现</a></li>
+<li><a href="#72%E5%BE%85%E5%AE%9E%E7%8E%B0">7.2.待实现</a></li>
+</ul>
+</li>
+<li><a href="#8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%8C%87%E5%8D%97">8.开发环境指南</a>
+<ul>
+<li><a href="#%E7%8E%AF%E5%A2%83%E8%A6%81%E6%B1%82">环境要求</a></li>
+</ul>
+</li>
+<li><a href="#9%E9%A1%B9%E7%9B%AE%E6%95%B4%E4%BD%93%E6%9C%AA%E6%9D%A5%E8%AE%A1%E5%88%92">9.项目整体未来计划</a></li>
+<li><a href="#%E8%AE%B8%E5%8F%AF%E8%AF%81mit-licence">许可证（MIT Licence）</a>
+<ul>
+<li><a href="#%E8%A2%AB%E6%8E%88%E6%9D%83%E4%BA%BA%E6%9D%83%E5%88%A9">被授权人权利</a></li>
+<li><a href="#%E8%A2%AB%E6%8E%88%E6%9D%83%E4%BA%BA%E4%B9%89%E5%8A%A1">被授权人义务</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1项目概述">1.项目概述 </h2>
+<h3 id="11项目简介">1.1.项目简介 </h3>
+<p>本项目是一个面向HarmonyOS NEXT设备打造的智能健康管理平台，主要功能模块包括：</p>
+<ul>
+<li>核心健康指标看板（心率、血氧、睡眠等）</li>
+<li>分类浏览（如呼吸、心脏等）</li>
+<li>健康数据的总结性展示（如每日摘要）</li>
+<li>详细查看特定健康指标（如步数、活跃能量、BMI等）</li>
+<li>智能提醒系统（久坐、心率异常等）</li>
+</ul>
+<h3 id="12-目标">1.2. 目标 </h3>
+<p>本项目旨在为用户提供与苹果“健康”应用相似的体验。通过1：1复刻核心界面和功能，同时增加创新功能，如健康提醒、趋势分析等，提升用户交互和数据管理能力。</p>
+<h3 id="13技术路线">1.3.技术路线 </h3>
+<p>本项目采用组件化架构，结合HarmonyOS的传感器、和UI组件，实现了实时健康数据追踪、分享和个性化设置，并且利用其原生 API 实现实时数据跟踪和安全的数据管理。应用基于 HarmonyOS ArkUI（方舟UI） 框架开发，使用 ETS 语言，集成了传感器、位置服务和通知等功能。数据通过 <code>AppStorage</code> 持久化存储，UI 采用响应式状态管理。</p>
+<h3 id="14项目结构">1.4.项目结构 </h3>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>AppleHealth/
+├── entry/               # 应用入口
+│   ├── src/
+│   │   └── main/
+│   │       └── ets/
+│   │           ├── common/           # 公共组件
+│   │           │   ├── constants/    # 常量定义
+│   │           │   └── utils/        # 工具类
+│   │           ├── entryability/     # 应用能力
+│   │           │   └── EntryAbility.ets
+│   │           ├── entrybackupability/
+│   │           │   └── EntryBackupAbility.ets
+│   │           ├── model/            # 数据模型
+│   │           │   ├── Health.ets    # 健康数据接口
+│   │           │   ├── Healthy.ets   # 全局健康数据
+│   │           │   └── UserInfo.ets  # 用户信息
+│   │           ├── pages/            # 页面组件
+│   │           │   ├── AbstractPage.ets     # 健康指标仪表板
+│   │           │   ├── AppPage.ets          # 通用页面模板
+│   │           │   ├── BrowsePage.ets       # 分类浏览
+│   │           │   ├── CategoryDetailPage.ets # 分类详情
+│   │           │   ├── DetailPage.ets       # 指标详情
+│   │           │   ├── Index.ets            # 主入口
+│   │           │   ├── ResearchPage.ets     # 研究权限管理
+│   │           │   ├── SharePage.ets        # 数据共享
+│   │           │   └── UserInfoCollect.ets  # 用户数据收集
+│   │           └── view/             # 视图组件
+│   │               ├── CompletionStatus.ets
+│   │               ├── CurrentSituation.ets
+│   │               └── InputDialog.ets
+│   ├── build-profile.json5
+│   ├── hvigorfile.ts
+│   └── oh-package.json5
+├── AppScope/            # 应用配置
+├── Image/               # 图片资源
+│   ├── AbstractPage.gif
+│   ├── DataVisualization.png
+│   └── ... (其他图片资源)
+├── hvigor/              # 构建工具配置
+│   └── hvigor-config.json5
+├── Readme.md            # 项目文档
+└── oh-package.json5     # 项目配置
+</code></pre><h2 id="2功能特性">2.功能特性 </h2>
+<h3 id="21-核心功能复刻">2.1 核心功能复刻 </h3>
+<ul>
+<li>
+<p><strong>首次启动向导</strong><br>
+采用<code>PersistentStorage</code>实现用户信息持久化存储，二次启动自动跳过信息收集流程，删除软件重新安装可以再次召唤收集用户信息。</p>
+</li>
+<li>
+<p><strong>健康数据看板</strong><br>
+实时展示步数（<code>@ohos.sensor</code>）、活动能量计算、BMI等核心指标。</p>
+</li>
+</ul>
+<h3 id="22-数据展示系统">2.2 数据展示系统 </h3>
+<ul>
+<li>
+<p><strong>分类浏览体系</strong><br>
+基于<code>BrowsePage</code>的路由架构（<code>router.pushUrl</code>），支持呼吸/心脏等12类健康数据检索</p>
+</li>
+<li>
+<p><strong>多维度可视化</strong><br>
+1:1复刻苹果健康应用的：</p>
+<ul>
+<li>日/周/月<strong>趋势图</strong>（<code>&lt;LineChart&gt;</code>组件）</li>
+<li>七天<strong>外层预览</strong></li>
+<li><strong>交互式时间轴</strong>（<code>&lt;showTextPicker&gt;</code>控件）</li>
+</ul>
+</li>
+</ul>
+<h3 id="23-交互功能">2.3 交互功能 </h3>
+<ul>
+<li><strong>智能搜索</strong>  ：通过<code>Search</code>自考吗实现数据检索和过滤功能</li>
+<li><strong>数据共享机制</strong>  ：通过单例模式，实现数据共享与同步。</li>
+</ul>
+<h3 id="24-创新扩展功能">2.4 创新扩展功能 </h3>
+<ul>
+<li><strong>实时健康监测提醒</strong>
+<ul>
+<li>异常通知（需<code>ohos.permission.NOTIFICATION和reminderAgentManager：</code>）</li>
+</ul>
+</li>
+<li><strong>权限管理系统</strong><br>
+分层实现动态权限申请流程</li>
+</ul>
+<h2 id="3技术架构">3.技术架构 </h2>
+<h3 id="架构与技术栈">架构与技术栈 </h3>
+<p>基于HarmonyO NEXT的ArkUI（方舟UI）的ETS（Extended TypeScript）语言开发。</p>
+<ul>
+<li><strong>组件化架构</strong>：每个页面或功能模块独立为一个组件（如 <code>AbstractPage</code>、<code>BrowsePage</code>），提高可维护性。<br>
+主入口为Index.ets，负责初始化数据、验证用户信息并管理主导航。、</li>
+<li><strong>UI 设计</strong>：采用声明式 UI的ArkUI，结合 <code>Column</code>、<code>Row</code>、<code>List</code> 等组件，创建直观界面。</li>
+<li><strong>MVVM</strong>数据驱动架构：Model（模型）、View（视图）和ViewModel（视图模型）。</li>
+<li><code>AppStorage</code>+<code>PersistentStorage.persistProp</code><strong>全局状态管理</strong></li>
+<li>PersistentStorage<strong>数据持久化</strong></li>
+<li><strong>API</strong>：HarmonyOS 原生 API，包括<strong>传感器</strong>（<code>@ohos.sensor</code>）、存储（<code>AppStorage</code>）和<strong>通知</strong>（<code>notificationManager</code>+<code>reminderAgentManager</code>）。</li>
+<li><strong>实时传感器集成</strong>：通过计步传感器实现步数实时跟踪。</li>
+<li><strong>持久化存储</strong>：使用 <code>AppStorage</code> 保存用户数据和健康指标。</li>
+<li><strong>响应式状态管理</strong>：通过 <code>@State</code> 和 <code>@Provide</code> 实现动态 UI 更新。</li>
+<li><strong>自定义可视化</strong>：为历史数据提供直方图和图表展示。</li>
+<li><strong>权限管理</strong>：处理传感器、位置和通知权限，确保数据安全。</li>
+<li><strong>通知系统</strong>：支持健康跟踪提醒，如每日数据录入提示。</li>
+<li><strong>路由系统</strong>：通过 <code>router</code> 模块实现页面间导航（如 <code>router.pushUrl</code>、<code>router.back</code>）。</li>
+<li><strong>生命周期管理</strong>：页面使用 <code>aboutToAppear</code>、<code>onPageShow</code> 等方法进行初始化和清理。</li>
+<li><strong>异常处理</strong>：通过 try-catch 和日志记录处理权限、传感器等操作的异常。</li>
+<li><strong>单例模式</strong>的运用：
+<ul>
+<li><code>HealthDataStore</code> 单例模式用于管理健康数据。</li>
+<li><code>PermissionManager</code> 单例模式用于管理权限申请和检查。</li>
+</ul>
+</li>
+</ul>
+<h2 id="4页面功能及其跳转逻辑">4.页面功能及其跳转逻辑 </h2>
+<h3 id="41页面功能">4.1.页面功能 </h3>
+<h4 id="功能与页面映射表">功能与页面映射表 </h4>
+<p>以下表格总结了应用的主要功能及其对应的页面：</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>页面</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>健康指标仪表板</td>
+<td>AbstractPage</td>
+<td>显示实时健康指标和历史趋势</td>
+</tr>
+<tr>
+<td>分类浏览</td>
+<td>BrowsePage</td>
+<td>浏览健康分类，支持搜索和过滤</td>
+</tr>
+<tr>
+<td>分类详情</td>
+<td>CategoryDetailPage</td>
+<td>显示分类下的具体指标</td>
+</tr>
+<tr>
+<td>指标详情</td>
+<td>DetailPage</td>
+<td>提供单个指标的详细信息和数据录入</td>
+</tr>
+<tr>
+<td>数据共享</td>
+<td>SharePage</td>
+<td>管理健康数据共享和权限</td>
+</tr>
+<tr>
+<td>研究权限管理</td>
+<td>ResearchPage</td>
+<td>管理研究机构数据访问（占位）</td>
+</tr>
+<tr>
+<td>用户数据收集</td>
+<td>UserInfoCollect</td>
+<td>引导用户录入个人信息</td>
+</tr>
+<tr>
+<td>主导航</td>
+<td>Index</td>
+<td>提供选项卡导航和用户信息检查</td>
+</tr>
+<tr>
+<td>通用页面模板</td>
+<td>AppPage</td>
+<td>提供返回按钮和动态标题的页面模板</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42页面详情">4.2.页面详情 </h3>
+<h4 id="421index主入口">4.2.1.Index（主入口） </h4>
+<ul>
+<li>
+<p><strong>功能架构</strong>：</p>
+<ul>
+<li>应用总控模块，协调数据初始化与页面导航</li>
+<li>采用MVVM模式分离视图与业务逻辑</li>
+</ul>
+</li>
+<li>
+<p><strong>核心特性</strong>：</p>
+<ul>
+<li>用户信息完整性验证</li>
+<li>三栏式底部导航（摘要/分享/浏览）</li>
+<li>自适应弹窗控制系统</li>
+</ul>
+</li>
+<li>
+<p><strong>性能优化措施</strong>：</p>
+<ol>
+<li>使用<code>PersistentStorage</code>减少AppStorage访问频次并且实现数据持久化。<br>
+<img src="Image/PersistentStorage.gif" alt="PersistentStorage"></li>
+<li>使用<code>@StorageLink</code>进行数据绑定，确保数据的实时更新。</li>
+<li>只有删除APP才会还原持久化存储，后台退出之后不会再重复收集用户信息</li>
+</ol>
+</li>
+<li>
+<p><strong>试用bindSheet绑定半模态界面实现半模态转场</strong>：</p>
+</li>
+<li>
+<p><code>bindSheet</code>方法实现半模态转场：</p>
+<ul>
+<li>弹窗展示时，用户可以继续在主页面操作，但弹窗内容会覆盖部分主页面内容。</li>
+<li>弹窗内容可以滚动，但不会影响主页面滚动。<br>
+<img src="Image/AppleBindSheet.gif" alt="AppleBindSheet"><br>
+<img src="Image/HUAWEIBindSheet.gif" alt="HUAWEIBindSheet"></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>参数项</th>
+<th>配置值</th>
+<th>作用描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>detents</td>
+<td>[SheetSize.LARGE]×3</td>
+<td>控制弹窗高度占比</td>
+</tr>
+<tr>
+<td>blurStyle</td>
+<td>BlurStyle.Thick</td>
+<td>背景模糊效果</td>
+</tr>
+<tr>
+<td>onWillDismiss</td>
+<td>重置isShow状态</td>
+<td>防止内存泄漏</td>
+</tr>
+<tr>
+<td>dragBar</td>
+<td>false</td>
+<td>隐藏拖动条提升视觉统一性</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><code>tabBarDynamic</code>实现动态tabBar：</p>
+<ul>
+<li>当用户点击tabBar时，切换到对应的页面，tabBar是否被选中时颜色有不同。</li>
+</ul>
+</li>
+<li>
+<p><strong>权限检查机制</strong>：</p>
+<ol>
+<li>启动时校验<code>ohos.permission.READ_HEALTH_DATA</code></li>
+<li>弹窗显示前检查<code>ohos.permission.SYSTEM_FLOAT_WINDOW</code></li>
+<li>位置服务动态申请<code>ohos.permission.LOCATION</code></li>
+</ol>
+</li>
+</ul>
+<h4 id="422userinfocollect">4.2.2.UserInfoCollect </h4>
+<h5 id="4221功能架构">4.2.2.1.功能架构 </h5>
+<ul>
+<li>
+<p>四步式用户引导流程（欢迎→隐私→通知→信息收集）</p>
+</li>
+<li>
+<p>1：1复刻原软件使用体验的开屏界面</p>
+</li>
+<li>
+<p>采用Swiper组件实现页面切换（主要是为了四个页面的<strong>左右切换动效</strong>）<br>
+<img src="Image/UserInfoCollect.gif" alt="UserInfoCollect"></p>
+</li>
+<li>
+<p><strong>关键技术实现</strong>：</p>
+<ul>
+<li><strong>权限管理</strong>：通过<code>requestPermissionsFromUser</code>方法动态申请权限。<br>
+<img src="Image/PermissionGet.gif" alt="PermissionGet"></li>
+<li><strong>Notification弹窗通知</strong><br>
+<img src="Image/Notification.gif" alt="Notification"></li>
+</ul>
+</li>
+</ul>
+<h5 id="4222核心交互特性">4.2.2.2.核心交互特性 </h5>
+<ol>
+<li>智能表单验证：<br>
+当表单没有填写完全的时候，确认键是不可以点击的，使用了button的enabled属性和一个动态刷新的本组件方法来完成的。<br>
+<img src="Image/Validation.gif" alt="Validation"></li>
+<li>动态数据选择器：</li>
+</ol>
+<p>使用<code>TextPickerDialog</code>实现身高和体重选择器，用户选择后更新 <code>tempUserInfo</code> 对象的对应属性。range使用Foreach循环生成，onAccept回调函数中处理用户选择的数据。与DataPicker组件不同的是，TextPickerDialog完全还原了原UI和操作体验。</p>
+<p><img src="Image/PickerDialog.gif" alt="alt text"></p>
+<h5 id="4223完成了但是并未获得开发者权限的功能">4.2.2.3.完成了但是并未获得开发者权限的功能 </h5>
+<ul>
+<li><strong>后台通知权限</strong><code>reminderAgentManager：</code><br>
+在代码中已经实现了，但是开发者权限还未获得。Log中打印出Error，显示Reminder Exceeds Limit（提醒数量达到限制），在翻阅文档之后，得知消息数量需要写邮件申请开发者权限。十个工作日之后得到回复之后在过一个工作日，方可继续使用。<br>
+<img src="Image/ReminderExceedLimit.png" alt="ReminderExceedLimit"><br>
+<img src="Image/PermissionRestrictions.png" alt="PermissionRestrictions"><br>
+原本应该当达成的目标是会在下滑窗口中展示一个消息通知，并且会根据用户所给的权限来决定是否弹窗,类似下图所示的效果：<br>
+<img src="Image/Reminder.png" alt="Reminder"></li>
+</ul>
+<h5 id="4224完成了但是被修改掉的功能">4.2.2.4.完成了但是被修改掉的功能 </h5>
+<ul>
+<li><strong>主动动画效果</strong><code>TransitionEffect</code><br>
+在代码中已经实现了，但是由于后续优化，把初次登陆的弹窗改在bindSheet中，四个页面的左右动画修改优化为</li>
+</ul>
+<p>原本达成的动画淡入淡出效果如下图所示：<br>
+<img src="Image/TransitionEffect.gif" alt="TransitionEffect"></p>
+<ul>
+<li><strong>权限管理矩阵</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>权限类型</th>
+<th>申请时机</th>
+<th>实现方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ohos.permission.ACTIVITY_MOTION</td>
+<td>通知权限页</td>
+<td>requestPermissionsFromUser()</td>
+</tr>
+<tr>
+<td>SYSTEM_FLOAT_WINDOW</td>
+<td>弹窗显示前</td>
+<td>bindSheet自动处理</td>
+</tr>
+<tr>
+<td>LOCATION</td>
+<td>位置服务使用时</td>
+<td>动态申请</td>
+</tr>
+</tbody>
+</table>
+<h4 id="423abstractpage">4.2.3.AbstractPage </h4>
+<h5 id="功能概述">功能概述 </h5>
+<ul>
+<li><strong>主要功能</strong>：展示今日健康指标，包括步数、活动能量、身高、体重、BMI和爬楼层数</li>
+<li><strong>数据展示</strong>：每项指标显示过去7天的直方图，通过柱状图可视化健康数据趋势</li>
+<li><strong>实时更新</strong>：使用计步传感器实时更新步数，支持位置跟踪显示用户当前位置<br>
+大致实现的功能如下图所示：<br>
+<img src="Image/AbstractPage.gif" alt="AbstractPage"></li>
+</ul>
+<h5 id="数据可视化">数据可视化 </h5>
+<ul>
+<li><strong>柱状图组件</strong>：自定义<code>HistogramChart</code>组件，根据健康参数类型动态渲染柱状图</li>
+<li><strong>动态高度计算</strong>：通过<code>calculateHealthPercentage</code>方法计算每个柱子的相对高度</li>
+<li><strong>颜色区分</strong>：当天数据使用蓝色(#419cff)，历史数据使用灰色(#999999)</li>
+<li><strong>数据更新</strong>：在数据收到修改时，在页面显示时重新计算数据<br>
+<img src="Image/DataVisualization.png" alt="DataVisualization"></li>
+</ul>
+<h5 id="页面模板组件">页面模板组件 </h5>
+<ul>
+<li><strong>健身数据模板</strong>：<code>fitnessTemplate</code>用于展示步数、活动能量和爬楼层数等运动数据</li>
+<li><strong>身体数据模板</strong>：<code>bodyTemplate</code>用于展示身高、体重和BMI等身体数据</li>
+<li><strong>点击跳转</strong>：点击任一指标卡片跳转至<code>DetailPage</code>，传递类型、数据和单位参数</li>
+</ul>
+<h5 id="abstractpage组件生命周期管理">AbstractPage组件生命周期管理 </h5>
+<ul>
+<li><strong>aboutToAppear</strong>：初始化数据、计算BMI、请求权限、启动传感器监听</li>
+<li><strong>aboutToDisappear</strong>：关闭传感器监听，释放资源</li>
+<li><strong>onPageShow</strong>：页面显示时重新初始化数据和权限</li>
+</ul>
+<h5 id="未完全实现的功能">未完全实现的功能 </h5>
+<h6 id="动态ui效果">动态UI效果 </h6>
+<p>在代码中<code>startBackgroundAnimation</code>已经大致实现动态刷新的效果，但是由于时间原因，未能完成UI的优化。后续只要在<code>build</code>中引入<code>Stack</code>组件并且使用<code>Canvas</code>画布组件进行绘制图画即可实现还原苹果的UI背景图上的动态效果。<br>
+目标要达成的效果如图所示：<br>
+<img src="Image/DynamicUI.gif" alt="DynamicUI"></p>
+<h6 id="传感器集成">传感器集成 </h6>
+<p>在代码中已经实现了传感器集成，但是由于获取权限失败的原因，未能完成传感器数据的实时更新。<br>
+在代码中已完成的工作包括：</p>
+<ol>
+<li>在<code>module.json5</code>中声明权限所需<code>内容、使用位置、使用原因、使用时间</code>。</li>
+<li>在代码中申请权限，并且使用<code>requestPermissionsFromUser</code>方法动态申请权限。(将应用中需要申请权限的目标对象与对应目标权限进行关联，让用户明确地知道，哪些操作需要用户向应用授予指定的权限。)</li>
+<li>运行应用时，在用户触发访问操作目标对象时应该调用接口，精准触发动态授权弹框。该接口的内部会检查当前用户是否已经授权应用所需的权限，如果当前用户尚未授予应用所需的权限，该接口会拉起动态授权弹框，向用户请求授权。</li>
+<li>当用户同意或拒绝授权时，会触发回调函数，开发者可以根据用户的选择来决定是否继续执行操作。<br>
+<img src="Image/PermissionDenied.png" alt="PermissionDenied"></li>
+</ol>
+<h4 id="424detailpage">4.2.4.DetailPage </h4>
+<h5 id="功能概述-1">功能概述 </h5>
+<ul>
+<li><strong>主要功能</strong>：提供单个健康指标的详细信息展示与数据管理</li>
+<li><strong>页面定位</strong>：健康数据深度分析与交互界面</li>
+<li><strong>用户价值</strong>：帮助用户追踪、分析和管理特定健康指标的历史变化</li>
+</ul>
+<h5 id="数据可视化展示">数据可视化展示 </h5>
+<p><img src="Image/DetailPage.png" alt="DetailPage"></p>
+<h5 id="时间范围切换">时间范围切换 </h5>
+<ul>
+<li><strong>支持多种时间维度</strong>：日、周、月、6个月、年</li>
+<li><strong>实现方式</strong>：通过<code>@State selectedTimeRange</code>状态变量控制当前选中的时间范围</li>
+<li><strong>数据适配</strong>：根据选中的时间范围动态调整数据展示和图表比例</li>
+</ul>
+<h5 id="数据管理机制">数据管理机制 </h5>
+<ul>
+<li><strong>数据源</strong>：通过<code>HealthDataStore</code>单例模式管理健康数据</li>
+<li><strong>状态绑定</strong>：使用<code>@StorageLink</code>装饰器实现数据与UI的双向绑定</li>
+<li><strong>数据计算</strong>：<code>calculateHealthPercentage</code>方法动态计算柱状图高度百分比</li>
+</ul>
+<h5 id="ui组件复用">UI组件复用 </h5>
+<ul>
+<li><strong>绘图与组件Builder</strong>：创建可复用的UI组件，如<code>HistogramChart</code>和<code>OptionItem</code></li>
+<li><strong>动态渲染</strong>：根据健康参数类型动态渲染不同的UI组件</li>
+<li><strong>样式统一</strong>：保持与苹果健康应用一致的视觉风格</li>
+</ul>
+<h5 id="页面交互流程">页面交互流程 </h5>
+<ol>
+<li><strong>页面加载</strong>：初始化数据、申请权限、启动传感器监听</li>
+<li><strong>数据展示</strong>：显示当前健康指标值、单位和历史数据柱状图</li>
+<li><strong>时间范围切换</strong>：用户可选择不同时间范围查看历史数据</li>
+<li><strong>数据录入</strong>：通过底部弹窗添加新的健康数据记录，所提交的数据会在<code>HealthDataStore</code>中更新，在页面显示时重新计算数据的Chart，实现<strong>数据和数据缩略图实时更新</strong>。</li>
+<li><strong>返回导航</strong>：使用顶部返回按钮返回上一页面，同时，上一个界面的<strong>数据和数据缩略图</strong>和也会实时更新。如果更改了身高或者体重，会<strong>重新计算BMI</strong>。<strong>这一个功能IOS的健康应用中是没有的</strong>，但是我们认为这个功能对于用户来说是非常有用的，因为用户在更改身高或者体重之后，可以立即看到BMI的变化，从而及时调整自己的饮食和运动计划。<br>
+下图展示了DetailPage的交互流程：<br>
+<img src="Image/DetailPage.gif" alt="DetailPage"></li>
+</ol>
+<h5 id="未来优化方向">未来优化方向 </h5>
+<ol>
+<li><strong>数据可视化增强</strong>：增加折线图、饼图等多种图表类型</li>
+<li><strong>数据分析功能</strong>：添加趋势分析、异常检测等高级功能</li>
+<li><strong>用户交互优化</strong>：优化数据录入流程，支持批量导入</li>
+<li><strong>离线与在线数据同步</strong>：实现<strong>离线</strong>数据收集和<strong>后台</strong>同步功能</li>
+<li><strong>传感器实时数据集成</strong>:尚未完全实现功能，原因与<a href="#%E4%BC%A0%E6%84%9F%E5%99%A8%E9%9B%86%E6%88%90">AbstractPage的传感器集成</a>相同，后续优化方向为：优化传感器实时数据集成，实现实时数据更新和位置跟踪功能。</li>
+</ol>
+<h4 id="425browsepage">4.2.5.BrowsePage </h4>
+<h5 id="功能概述-2">功能概述 </h5>
+<ul>
+<li><strong>健康分类浏览</strong>：提供多种健康类别的分类浏览功能，包括呼吸、活动能力、健身记录等15个健康分类。</li>
+<li><strong>搜索与过滤</strong>：支持实时关键词搜索，动态过滤健康类别。</li>
+<li><strong>分类导航</strong>：点击任意分类可跳转至对应的详情页面。</li>
+</ul>
+<h5 id="搜索与过滤逻辑">搜索与过滤逻辑 </h5>
+<ul>
+<li>实现<code>filterCategories</code>方法处理搜索逻辑：
+<ul>
+<li>空关键词时显示所有类别</li>
+<li>有关键词时基于标题包含关系进行过滤</li>
+</ul>
+</li>
+<li>搜索组件集成：
+<ul>
+<li><code>onSubmit</code>事件处理搜索提交</li>
+<li><code>onChange</code>事件实现实时过滤</li>
+<li><code>onTouch</code>事件处理搜索框交互</li>
+</ul>
+</li>
+<li>实现模糊匹配算法：
+<ul>
+<li>基于<code>item.title.includes(keyword)</code>方法进行模糊匹配</li>
+<li>忽略大小写，支持部分匹配</li>
+</ul>
+</li>
+</ul>
+<p><strong>实现的搜索与过滤效果如下图所示：</strong><br>
+<img src="Image/BrowserSearch.gif" alt="BrowserSearch"></p>
+<h6 id="路由导航">路由导航 </h6>
+<ul>
+<li>实现<code>navigateToCategoryDetail</code>方法处理类别点击导航：
+<ul>
+<li>使用<code>router.pushUrl</code>进行页面跳转</li>
+<li>通过<code>params</code>传递类别标题等参数</li>
+</ul>
+</li>
+</ul>
+<h6 id="ui组件构建">UI组件构建 </h6>
+<ul>
+<li>使用<code>@Builder</code>装饰器创建可复用UI组件：
+<ul>
+<li><code>Search</code>: 搜索栏组件</li>
+<li><code>SearchBar</code>：搜索栏组件整体</li>
+<li><code>CategoryItem</code>：类别项组件</li>
+</ul>
+</li>
+<li>主界面使用<code>List</code>和<code>ListItem</code>构建垂直滚动列表</li>
+<li>使用<code>ForEach</code>动态渲染过滤后的类别列表</li>
+<li>实现空结果状态显示<br>
+<strong>空结果状态显示效果如下图所示：</strong><br>
+<img src="Image/EmptyState.png" alt="EmptyState"></li>
+</ul>
+<h5 id="未来优化方向-1">未来优化方向 </h5>
+<ol>
+<li><strong>搜索历史记录</strong>：添加最近搜索记录功能</li>
+<li><strong>类别收藏</strong>：支持用户收藏常用健康类别</li>
+<li><strong>个性化排序</strong>：基于用户使用频率动态调整类别顺序</li>
+<li><strong>搜索建议</strong>：实现智能搜索建议功能</li>
+<li><strong>多维度过滤</strong>：增加按颜色、使用频率等多维度过滤选项</li>
+</ol>
+<h4 id="426categorydetailpage">4.2.6.CategoryDetailPage </h4>
+<h5 id="功能概述-3">功能概述 </h5>
+<ul>
+<li><strong>分类详情展示</strong>：根据从BrowsePage传递的分类标题，显示该分类下的所有健康指标</li>
+<li><strong>数据状态区分</strong>：清晰区分有数据和无数据的健康指标，提供不同的视觉呈现</li>
+<li><strong>导航控制</strong>：提供返回按钮，支持用户返回上一级页面</li>
+</ul>
+<h5 id="交互特性">交互特性 </h5>
+<ul>
+<li><strong>返回导航</strong>：点击返回按钮返回上一页面</li>
+</ul>
+<p>实现的分类详情页面效果如下图所示：<br>
+<img src="Image/CategoryDetailPage.png" alt="CategoryDetailPage"></p>
+<h5 id="未来优化方向-2">未来优化方向 </h5>
+<ol>
+<li><strong>完善分类数据</strong>：为所有健康分类添加对应的指标数据</li>
+<li><strong>数据录入功能</strong>：实现点击无数据指标项后的数据录入界面</li>
+<li><strong>数据可视化</strong>：为有数据的指标添加趋势图表</li>
+<li><strong>实时数据更新</strong>：集成传感器数据，实现部分指标的实时更新</li>
+<li><strong>数据导入导出</strong>：支持从其他健康应用导入数据</li>
+</ol>
+<h4 id="427sharepage">4.2.7.SharePage </h4>
+<h5 id="功能概述-4">功能概述 </h5>
+<ul>
+<li><strong>主要功能</strong>：管理健康数据共享，提供数据共享控制中心</li>
+<li><strong>核心用途</strong>：允许用户管理与他人共享的健康数据，以及查看他人共享给自己的数据</li>
+<li><strong>目标用户</strong>：需要与家人、医生或照护者共享健康数据的用户</li>
+</ul>
+<h5 id="路由导航-1">路由导航 </h5>
+<ul>
+<li>使用 <code>router.pushUrl</code> 实现页面跳转，支持参数传递</li>
+<li>点击"App"跳转至AppPage，点击"调研"跳转至ResearchPage</li>
+<li>通过params传递页面标题，确保目标页面显示正确的标题</li>
+</ul>
+<h6 id="视觉设计">视觉设计 </h6>
+<ul>
+<li><strong>卡片式布局</strong>：使用圆角和白色背景创建卡片式UI</li>
+<li><strong>图标与文本组合</strong>：结合图标和文本提升视觉吸引力</li>
+<li><strong>分隔线处理</strong>：在列表项之间添加分隔线增强视觉层次</li>
+<li><strong>颜色对比</strong>：使用蓝色突出重要按钮和图标，灰色表示次要信息<br>
+<strong>下面是SharePage的视觉设计效果：</strong><br>
+<img src="Image/SharePage.png" alt="SharePage"></li>
+</ul>
+<h5 id="未来优化方向-3">未来优化方向 </h5>
+<ul>
+<li><strong>实现共享功能</strong>：完成"与他人共享"和"请求他人共享"的实际功能</li>
+<li><strong>共享记录管理</strong>：添加查看和管理共享记录的功能</li>
+<li><strong>权限精细控制</strong>：允许用户精确控制共享数据的范围和时限</li>
+<li><strong>通知集成</strong>：实现共享数据更新时的通知功能</li>
+<li><strong>数据加密</strong>：增强共享数据的安全性和隐私保护</li>
+</ul>
+<h4 id="428researchpage">4.2.8.ResearchPage </h4>
+<h5 id="功能概述-5">功能概述 </h5>
+<ul>
+<li><strong>主要功能</strong>：管理研究机构的数据访问权限</li>
+<li><strong>当前状态</strong>：显示"无内容"，作为未来功能的占位页面</li>
+<li><strong>设计目的</strong>：为用户提供参与健康研究的入口，同时保持数据控制权<br>
+<strong>下面是ResearchPage的视觉设计效果：</strong><br>
+<img src="Image/ResearchPage.png" alt="ResearchPage"></li>
+</ul>
+<h5 id="数据结构设计">数据结构设计 </h5>
+<ul>
+<li>使用 <code>RouTmp</code> 接口定义路由参数结构，包含标题属性</li>
+<li>通过 <code>router.getParams()</code> 获取路由参数，动态设置页面标题</li>
+</ul>
+<h6 id="路由导航-2">路由导航 </h6>
+<ul>
+<li>使用 <code>router.back()</code> 实现返回上一页面的功能</li>
+<li>通过点击返回按钮触发导航操作</li>
+<li><strong>返回导航</strong>：支持通过返回按钮返回上一页面</li>
+</ul>
+<h4 id="429apppage">4.2.9.AppPage </h4>
+<h5 id="功能概述-6">功能概述 </h5>
+<ul>
+<li><strong>主要功能</strong>：显示可访问健康数据的应用列表</li>
+<li><strong>当前状态</strong>：显示基本UI框架，内容为占位文本</li>
+<li><strong>设计目的</strong>：为用户提供管理第三方应用数据访问权限的界面</li>
+</ul>
+<h5 id="数据结构设计-1">数据结构设计 </h5>
+<ul>
+<li>使用 <code>RouTmp</code> 接口定义路由参数结构，包含标题属性</li>
+<li>通过 <code>router.getParams()</code> 获取路由参数，动态设置页面标题</li>
+</ul>
+<h5 id="路由导航-3">路由导航 </h5>
+<ul>
+<li>使用 <code>router.back()</code> 实现返回上一页面的功能</li>
+<li>通过点击返回按钮触发导航操作</li>
+<li><strong>返回导航</strong>：支持通过返回按钮返回上一页面</li>
+</ul>
+<p>目前只是实现了UI框架，后续将添加实际内容。</p>
+<h3 id="43页面跳转逻辑">4.3.页面跳转逻辑 </h3>
+<h4 id="431页面跳转逻辑示意图">4.3.1.页面跳转逻辑示意图 </h4>
+<div class="mermaid">graph TD
+    %% 主结构
+    subgraph 主流程
+    A[Index] --&gt;|选项卡导航| B(AbstractPage)
+    A --&gt;|选项卡导航| C(SharePage)
+    A --&gt;|选项卡导航| D(BrowsePage)
+    B --&gt;|点击指标卡片| E(DetailPage)
+    D --&gt;|点击分类项| F(CategoryDetailPage)
+    C --&gt;|点击应用列表| G(AppPage)
+    C --&gt;|点击研究管理| H(ResearchPage)
+    end
+
+    %% 用户信息收集（独立模块）
+    subgraph 用户引导流程
+    I(UserInfoCollect)
+    end
+
+    %% 特殊跳转关系
+    A -.-&gt;|第一次打开APP| I
+    I --&gt;|完成信息收集| A
+    
+    %% 返回逻辑
+    E --&gt;|返回| B
+    F --&gt;|返回| D
+    G --&gt;|返回| C
+    H --&gt;|返回| C
+    
+    %% 跨模块跳转
+    F -.-&gt;|点击具体指标| E
+
+    %% 样式定义
+    classDef main fill:#e6f3ff,stroke:#419cff,stroke-width:2px;
+    classDef sub fill:#f0f9eb,stroke:#85c61a;
+    class A,B,C,D,E,F,G,H main;
+    class I sub;
+</div><p><strong>页面跳转流程序列图</strong></p>
+<div class="mermaid">sequenceDiagram
+    participant 用户
+    participant 当前页面
+    participant router
+    participant 目标页面
+    用户-&gt;&gt;当前页面: 点击导航按钮
+    当前页面-&gt;&gt;router: pushUrl()
+    router-&gt;&gt;目标页面: 初始化
+    目标页面--&gt;&gt;router: aboutToAppear()
+    router--&gt;&gt;当前页面: 隐藏当前页
+    目标页面--&gt;&gt;用户: 渲染完成
+</div><h4 id="432跳转逻辑说明表">4.3.2.跳转逻辑说明表 </h4>
+<table>
+<thead>
+<tr>
+<th>源页面</th>
+<th>目标页面</th>
+<th>触发条件</th>
+<th>参数传递</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Index</td>
+<td>AbstractPage</td>
+<td>点击"摘要"选项卡</td>
+<td>无</td>
+</tr>
+<tr>
+<td>Index</td>
+<td>SharePage</td>
+<td>点击"共享"选项卡</td>
+<td>无</td>
+</tr>
+<tr>
+<td>Index</td>
+<td>BrowsePage</td>
+<td>点击"浏览"选项卡</td>
+<td>无</td>
+</tr>
+<tr>
+<td>AbstractPage</td>
+<td>DetailPage</td>
+<td>点击任一健康指标卡片</td>
+<td>类型/当前值/单位/历史数据</td>
+</tr>
+<tr>
+<td>BrowsePage</td>
+<td>CategoryDetailPage</td>
+<td>点击分类项</td>
+<td>分类标题/关联指标列表</td>
+</tr>
+<tr>
+<td>SharePage</td>
+<td>AppPage</td>
+<td>点击"APP"卡片</td>
+<td>页面标题</td>
+</tr>
+<tr>
+<td>SharePage</td>
+<td>ResearchPage</td>
+<td>点击"研究"卡片</td>
+<td>页面标题</td>
+</tr>
+<tr>
+<td>UserInfoCollect</td>
+<td>Index</td>
+<td>完成用户信息收集</td>
+<td>用户信息对象</td>
+</tr>
+<tr>
+<td>所有页面</td>
+<td>上一级页面</td>
+<td>点击返回按钮/系统返回手势</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5健康数据管理">5.健康数据管理 </h2>
+<h3 id="51数据模型设计">5.1.数据模型设计 </h3>
+<h4 id="511核心数据结构">5.1.1.核心数据结构 </h4>
+<ul>
+<li>
+<p><strong>Health接口</strong>：定义了健康数据的基本结构，包含以下关键指标：</p>
+<ul>
+<li>活动指标：步数、活动能量消耗、爬楼层数</li>
+<li>身体指标：BMI、身高、体重</li>
+<li>生理指标：心率、血氧饱和度、体温、压力水平</li>
+<li>睡眠指标：睡眠分析时长</li>
+<li>时间属性：记录日期</li>
+</ul>
+</li>
+<li>
+<p><strong>DefaultHealth常量</strong>：提供默认健康数据值，用于初始化和重置</p>
+</li>
+<li>
+<p><strong>UserInfo接口</strong>：存储用户个人信息，包括：</p>
+<ul>
+<li>基本信息：姓氏、名字、生日、性别</li>
+<li>身体数据：身高、体重</li>
+<li>应用设置：通知权限状态</li>
+</ul>
+</li>
+</ul>
+<h5 id="类图">类图 </h5>
+<div class="mermaid">classDiagram
+    class Health {
+        &lt;&lt;interface&gt;&gt;
+        +steps: number
+        +activeEnergy: number
+        +bmi: number
+        +flightsClimbed: number
+        +heartRate: number
+        +sleepAnalysis: number
+        +bloodOxygen: number
+        +bodyTemperature: number
+        +stressLevel: number
+        +recordDate: Date
+        +height: number
+        +weight: number
+    }
+
+    class UserInfo {
+        &lt;&lt;interface&gt;&gt;
+        +surName: string
+        +givenName: string
+        +birthday: Date
+        +gender: string
+        +userHeight: number
+        +weight: number
+        +notificationAllowed: boolean
+    }
+
+    class HealthDataStore {
+        &lt;&lt;Singleton&gt;&gt;
+        -_instance: HealthDataStore
+        +healthHistory: Health[]
+        +getInstance(): HealthDataStore
+        +addHealthRecord(Health)
+        -generatePastWeekData()
+    }
+
+    class GlobalHealthData {
+        +stepCount: number
+        +calories: number
+        +exerciseTime: number
+        +stepGoal: number
+        +startStepCounter()
+        +stopStepCounter()
+    }
+
+    HealthDataStore --&gt; Health : 聚合
+    GlobalHealthData ..&gt; Health : 依赖
+    HealthDataStore ..&gt; UserInfo : 使用身高/体重
+</div><h4 id="512全局健康数据管理">5.1.2.全局健康数据管理 </h4>
+<ul>
+<li><strong>GlobalHealthData类</strong>：实时健康数据追踪
+<ul>
+<li>运动指标：步数、卡路里消耗、运动时间、步数目标</li>
+<li>状态标志：运动状态、计步器初始值、定时器ID</li>
+</ul>
+</li>
+</ul>
+<h3 id="52healthdatastore单例模式">5.2.HealthDataStore单例模式 </h3>
+<h4 id="521设计原理">5.2.1.设计原理 </h4>
+<ul>
+<li><strong>单例实现</strong>：通过静态<code>_instance</code>属性和<code>getInstance()</code>方法确保全局唯一实例</li>
+<li><strong>私有构造函数</strong>：防止外部直接实例化，保证数据一致性</li>
+<li><strong>观察者模式</strong>：使用<code>@ObservedV2</code>装饰器实现数据变化的自动通知</li>
+<li><strong>追踪机制</strong>：使用<code>@Trace</code>装饰器跟踪关键属性变化</li>
+</ul>
+<h4 id="522数据管理方法">5.2.2.数据管理方法 </h4>
+<ul>
+<li><strong>addHealthRecord</strong>：添加新的健康记录，同时维护最多7天的数据量</li>
+<li><strong>generatePastWeekData</strong>：生成过去七天的模拟健康数据，用于初始化和演示</li>
+</ul>
+<h3 id="53传感器集成">5.3.传感器集成 </h3>
+<h4 id="531步数传感器">5.3.1.步数传感器 </h4>
+<ul>
+<li>使用<code>@kit.SensorServiceKit</code>的传感器API获取实时步数数据</li>
+<li>通过<code>sensor.on()</code>方法订阅计步器传感器(PEDOMETER)</li>
+<li>数据更新间隔设置为100000000纳秒，平衡实时性和性能</li>
+</ul>
+<h2 id="6权限管理机制">6.权限管理机制 </h2>
+<h4 id="权限管理流程示意图">权限管理流程示意图 </h4>
+<div class="mermaid">flowchart TD
+    A[声明权限] --&gt; B[关联对象]
+    B --&gt; C{权限检查}
+    C -- 已授权 --&gt; D[执行操作]
+    C -- 未授权 --&gt; E[动态申请]
+    E --&gt; F{用户选择}
+    F -- 允许 --&gt; D
+    F -- 拒绝 --&gt; G[显示引导提示]
+</div><h3 id="61在modulejson5声明权限">6.1.在<code>module.json5</code>声明权限 </h3>
+<p>在<code>src/main/module.json5</code>中声明所需权限：</p>
+<pre data-role="codeBlock" data-info="json5" class="language-json5 json5"><code><span class="token property">"requestPermissions"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"ohos.permission.INTERNET"</span><span class="token punctuation">,</span>
+    <span class="token property">"reason"</span><span class="token operator">:</span> <span class="token string">"$string:reason"</span><span class="token punctuation">,</span>
+    <span class="token property">"usedScene"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"abilities"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"EntryAbility"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"when"</span><span class="token operator">:</span> <span class="token string">"always"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+</code></pre><h3 id="62权限关联">6.2.权限关联 </h3>
+<p>在GlobalHealthData类中关联权限与传感器功能：</p>
+<pre data-role="codeBlock" data-info="arkts" class="language-arkts arkts"><code>// Healthy.ets
+const context = getContext(this) as common.UIAbilityContext;
+activityManager.checkPermissions(context); // 关联上下文与权限
+</code></pre><h3 id="63权限申请">6.3.权限申请 </h3>
+<p>采用分层申请策略：</p>
+<pre data-role="codeBlock" data-info="arkts" class="language-arkts arkts"><code>// ActivityManager.ets
+public static async reqPermissionsFromUser(permissions: Array&lt;Permissions&gt;, 
+  context: common.UIAbilityContext) {
+  try {
+    await abilityAccessCtrl.createAtManager().requestPermissionsFromUser(
+      context, 
+      permissions
+    );
+  } catch (err) {
+    console.error(`权限申请失败: ${err.message}`);
+  }
+}
+</code></pre><h3 id="64授权检查">6.4.授权检查 </h3>
+<p>在数据采集前验证权限：</p>
+<pre data-role="codeBlock" data-info="arkts" class="language-arkts arkts"><code>// Healthy.ets
+public static checkPermissions(context: common.UIAbilityContext) {
+  try {
+    const atManager = abilityAccessCtrl.createAtManager();
+    const grantStatus = atManager.checkAccessToken(
+      context.tokenId, 
+      permissions
+    );
+    return grantStatus === 0; 
+  } catch (err) {
+    console.error(`权限检查异常: ${err.message}`);
+    return false;
+  }
+}
+</code></pre><h3 id="65权限序列图">6.5.权限序列图 </h3>
+<div class="mermaid">sequenceDiagram
+    participant 用户
+    participant 界面
+    participant PermissionManager
+    participant 系统
+    用户-&gt;&gt;界面: 点击需要权限的功能
+    界面-&gt;&gt;PermissionManager: reqPermissionsFromUser()
+    PermissionManager-&gt;&gt;系统: 请求权限弹窗
+    系统--&gt;&gt;用户: 显示权限请求
+    用户--&gt;&gt;系统: 允许/拒绝
+    系统--&gt;&gt;PermissionManager: 返回授权结果
+    PermissionManager--&gt;&gt;界面: 更新权限状态
+</div><h2 id="7本地化适配">7.本地化适配 </h2>
+<h3 id="71已实现">7.1.已实现 </h3>
+<ul>
+<li>单位智能转换（公制/英制）</li>
+<li>区域化时间格式</li>
+</ul>
+<h3 id="72待实现">7.2.待实现 </h3>
+<ul>
+<li>语言本地化</li>
+<li>布局自适应不同屏幕尺寸</li>
+</ul>
+<h2 id="8开发环境指南">8.开发环境指南 </h2>
+<h3 id="环境要求">环境要求 </h3>
+<ul>
+<li><strong>IDE</strong>：DevEco Studio 5.0.4</li>
+<li><strong>SDK</strong>：HarmonyOS 5.0 API 17</li>
+</ul>
+<h2 id="9项目整体未来计划">9.项目整体未来计划 </h2>
+<ul>
+<li>完善 <code>ResearchPage</code>，添加研究权限管理功能，增加<strong>模糊搜索功</strong>能。</li>
+<li>扩展 <code>BrowsePage</code> 和 <code>CategoryDetailPage</code>，支持更多健康分类和指标。</li>
+<li>增强数据可视化，引入更复杂的图表类型。（例如苹果“健康”软件中折线图的缩略图/完整图绘制功能）</li>
+<li>增加一天内/一个月/半年/一年时间跨度的数据展示。</li>
+<li>优化用户引导流程，增加单位选择等个性化选项。</li>
+</ul>
+<h2 id="许可证mit-licence">许可证（MIT Licence） </h2>
+<p>本项目遵循MIT许可证。</p>
+<h3 id="被授权人权利">被授权人权利 </h3>
+<p>被授权人有权利使用、复制、修改、合并、出版发行、散布、再授权及贩售软件及软件的副本。<br>
+被授权人可根据程序的需要修改授权条款为适当的内容。</p>
+<h3 id="被授权人义务">被授权人义务 </h3>
+<p>在软件和软件的所有副本中都必须包含版权声明和许可声明。</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+      </div>
+      
+      
+    
+    
+    <script type="module">
+// TODO: If ZenUML gets integrated into mermaid in the future,
+//      we can remove the following lines.
+
+
+var MERMAID_CONFIG = ({"startOnLoad":false});
+if (typeof MERMAID_CONFIG !== 'undefined') {
+  MERMAID_CONFIG.startOnLoad = false
+  MERMAID_CONFIG.cloneCssStyles = false
+  MERMAID_CONFIG.theme = "default"
+}
+
+mermaid.initialize(MERMAID_CONFIG || {})
+if (typeof(window['Reveal']) !== 'undefined') {
+  function mermaidRevealHelper(event) {
+    var currentSlide = event.currentSlide
+    var diagrams = currentSlide.querySelectorAll('.mermaid')
+    for (var i = 0; i < diagrams.length; i++) {
+      var diagram = diagrams[i]
+      if (!diagram.hasAttribute('data-processed')) {
+        mermaid.init(null, diagram, ()=> {
+          Reveal.slide(event.indexh, event.indexv)
+        })
+      }
+    }
+  }
+  Reveal.addEventListener('slidetransitionend', mermaidRevealHelper)
+  Reveal.addEventListener('ready', mermaidRevealHelper)
+  await mermaid.run({
+    nodes: document.querySelectorAll('.mermaid')
+  })
+} else {
+  await mermaid.run({
+    nodes: document.querySelectorAll('.mermaid')
+  })
+}
+</script>
+    
+    
+    
+  
+    </body></html>
