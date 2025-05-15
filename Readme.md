@@ -1,5 +1,8 @@
 # AppleHealth 健康应用
 
+​	<img src="entry\src\main\resources\base\media\startIcon.png
+" alt="image-20250514193141889" style="zoom:40%;" />
+
 <!-- TOC -->
 ## 目录
 - [AppleHealth 健康应用](#applehealth-健康应用)
@@ -8,7 +11,12 @@
     - [1.1.项目简介](#11项目简介)
     - [1.2. 目标](#12-目标)
     - [1.3.技术路线](#13技术路线)
+    - [1.4.项目结构](#14项目结构)
   - [2.功能特性](#2功能特性)
+    - [2.1 核心功能复刻](#21-核心功能复刻)
+    - [2.2 数据展示系统](#22-数据展示系统)
+    - [2.3 交互功能](#23-交互功能)
+    - [2.4 创新扩展功能](#24-创新扩展功能)
   - [3.技术架构](#3技术架构)
     - [架构与技术栈](#架构与技术栈)
   - [4.页面功能及其跳转逻辑](#4页面功能及其跳转逻辑)
@@ -68,7 +76,7 @@
       - [5.1.1.核心数据结构](#511核心数据结构)
         - [类图](#类图)
       - [5.1.2.全局健康数据管理](#512全局健康数据管理)
-    - [5.2.`HealthDataStore`单例模式](#52healthdatastore单例模式)
+    - [5.2.HealthDataStore单例模式](#52healthdatastore单例模式)
       - [5.2.1.设计原理](#521设计原理)
       - [5.2.2.数据管理方法](#522数据管理方法)
     - [5.3.传感器集成](#53传感器集成)
@@ -109,21 +117,87 @@
 ### 1.3.技术路线
 本项目采用组件化架构，结合HarmonyOS的传感器、和UI组件，实现了实时健康数据追踪、分享和个性化设置，并且利用其原生 API 实现实时数据跟踪和安全的数据管理。应用基于 HarmonyOS ArkUI（方舟UI） 框架开发，使用 ETS 语言，集成了传感器、位置服务和通知等功能。数据通过 `AppStorage` 持久化存储，UI 采用响应式状态管理。
 
+### 1.4.项目结构
+
+```
+AppleHealth/
+├── entry/               # 应用入口
+│   ├── src/
+│   │   └── main/
+│   │       └── ets/
+│   │           ├── common/           # 公共组件
+│   │           │   ├── constants/    # 常量定义
+│   │           │   └── utils/        # 工具类
+│   │           ├── entryability/     # 应用能力
+│   │           │   └── EntryAbility.ets
+│   │           ├── entrybackupability/
+│   │           │   └── EntryBackupAbility.ets
+│   │           ├── model/            # 数据模型
+│   │           │   ├── Health.ets    # 健康数据接口
+│   │           │   ├── Healthy.ets   # 全局健康数据
+│   │           │   └── UserInfo.ets  # 用户信息
+│   │           ├── pages/            # 页面组件
+│   │           │   ├── AbstractPage.ets     # 健康指标仪表板
+│   │           │   ├── AppPage.ets          # 通用页面模板
+│   │           │   ├── BrowsePage.ets       # 分类浏览
+│   │           │   ├── CategoryDetailPage.ets # 分类详情
+│   │           │   ├── DetailPage.ets       # 指标详情
+│   │           │   ├── Index.ets            # 主入口
+│   │           │   ├── ResearchPage.ets     # 研究权限管理
+│   │           │   ├── SharePage.ets        # 数据共享
+│   │           │   └── UserInfoCollect.ets  # 用户数据收集
+│   │           └── view/             # 视图组件
+│   │               ├── CompletionStatus.ets
+│   │               ├── CurrentSituation.ets
+│   │               └── InputDialog.ets
+│   ├── build-profile.json5
+│   ├── hvigorfile.ts
+│   └── oh-package.json5
+├── AppScope/            # 应用配置
+├── Image/               # 图片资源
+│   ├── AbstractPage.gif
+│   ├── DataVisualization.png
+│   └── ... (其他图片资源)
+├── hvigor/              # 构建工具配置
+│   └── hvigor-config.json5
+├── Readme.md            # 项目文档
+└── oh-package.json5     # 项目配置
+```
+
 ## 2.功能特性
-- 原生功能复刻：
-  - **首次打开**健康信息收集向导，持久化存储后再次打开不会再重新收集信息，除非删除软件重新安装。
-  - **仪表板**：健康数据看板，展示关键健康指标，如步数、活动能量、身高、体重、BMI 和爬楼层数。
-  - **分类浏览**：用户可以浏览不同的健康分类，如呼吸、心脏等，并且用户可以主动修改信息。
-  - **总结性展示**：健康数据的总结性展示（如每日摘要），有和苹果“健康”应用1：1复刻的可视化UI。
-  - 查看特定的**详细**健康指标。
-  - **研究数据共享**的UI部分。
-  - 浏览和**搜索**不同健康类别
-  - **健康数据的分享和请求功能UI**
-  - **用户信息收集和通知设置**
-- 创新功能扩展：
-  - **弹窗提醒和通知提醒**：实时健康状态提醒（包含弹窗提醒/通知栏提醒）
-  - **BMI计算与同步**
-  - **研究权限管理**：为研究机构提供数据访问管理页面（待完善）。
+
+### 2.1 核心功能复刻
+- **首次启动向导**  
+  采用`PersistentStorage`实现用户信息持久化存储，二次启动自动跳过信息收集流程
+  
+- **健康数据看板**  
+  实时展示步数（`@ohos.sensor`）、活动能量（`HealthDataStore`计算）、BMI（基于`UserInfo`数据）等核心指标
+
+### 2.2 数据展示系统
+- **分类浏览体系**  
+  基于`BrowsePage`的路由架构（`router.pushUrl`），支持呼吸/心脏等12类健康数据检索
+
+- **多维度可视化**  
+  1:1复刻苹果健康应用的：
+  - 日/周/月趋势图（`<LineChart>`组件）
+  - 数据分布直方图（`<Histogram>`组件）
+  - 交互式时间轴（`<showTextPicker>`控件）
+
+### 2.3 交互功能
+- **智能搜索**  
+  支持关键字过滤（`@Watch`状态监听）和分类标签组合查询
+
+- **数据共享机制**  
+  包含：
+  - 研究机构访问权限管理界面（`ResearchPage`占位）
+  - 第三方应用授权管理界面（`SharePage`实现）
+
+### 2.4 创新扩展功能
+- **实时健康监测提醒**  
+  - 异常通知（需`ohos.permission.NOTIFICATION和reminderAgentManager：`）
+- **权限管理系统**  
+  分层实现动态权限申请流程
+
 
 ## 3.技术架构
 
@@ -645,7 +719,7 @@ classDiagram
   - 运动指标：步数、卡路里消耗、运动时间、步数目标
   - 状态标志：运动状态、计步器初始值、定时器ID
 
-### 5.2.`HealthDataStore`单例模式
+### 5.2.HealthDataStore单例模式
 
 #### 5.2.1.设计原理
 
@@ -768,8 +842,8 @@ sequenceDiagram
 ## 8.开发环境指南
 
 ### 环境要求
-- DevEco Studio 5.0.4
-- SDK API 9+
+- **IDE**：DevEco Studio 5.0.4
+- **SDK**：HarmonyOS 5.0 API 17
 
 ## 9.项目整体未来计划
 
